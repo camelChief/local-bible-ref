@@ -12,7 +12,7 @@ This plugin takes heavy inspiration from the [Bible Reference](https://github.co
 
 To start with, you will need to create a Bible in your own vault. Some instructions on this can be found [[4. Projects/Local Bible Ref README#Bible Markdown Format|below]] (this plugin uses a different markdown format to *Bible Linker*). Once you've done that, open up the *Local Bible Ref* settings and fill out the *Bibles Path* and *Default Version Shorthand* fields. Then, to use the plugin, simply open a new note and use the `--` reference prefix to grab a passage of scripture. There are also additional options (similar to terminal command options) you can provide to the reference to indicate which version to use and what markdown format to display the passage in. More information can be found [[4. Projects/Local Bible Ref README#Usage|below]].
 
-![[localBibleRef.gif]]
+![localBibleRef](https://github.com/user-attachments/assets/5904e42c-790e-4d11-9f00-e2ce8c81097c)
 
 ## Usage
 
@@ -34,8 +34,7 @@ The referencing syntax also allows for a lot of flexibility:
 
 ### Options
 
-Local Bible Ref also all![localBibleRef](https://github.com/user-attachments/assets/5904e42c-790e-4d11-9f00-e2ce8c81097c)
-ows you to provide a few options to a reference to specify which version you would like to use as well as what markdown format to use. Add an option to a reference by adding a `+` followed by the option (in any order): `--gen1:1-5+v:esv`
+Local Bible Ref also allows you to provide a few options to a reference to specify which version you would like to use as well as what markdown format to use. Add an option to a reference by adding a `+` followed by the option (in any order): `--gen1:1-5+v:esv`
 
 Syntax: `--<reference>[+<option>[:<value>]]...`
 
@@ -50,7 +49,7 @@ Syntax: `--<reference>[+<option>[:<value>]]...`
 
 The Bible markdown format required for this plugin is slightly more complex than the format used for the *Bible Linker* plugin. I chose this particular format because it makes the Bible much nicer to read if you simply wanted to use your vault Bible for reading (as I do). It looks something like this:
 
-![[localBibleRef2.gif]]
+![localBibleRef2](https://github.com/user-attachments/assets/e8f53757-81aa-4b77-a0e6-cbc6b2f1a4f4)
 
 Most of the formatting shown here is unnecessary. You really only need to ensure your Bible adheres to the following:
 
@@ -62,7 +61,7 @@ Most of the formatting shown here is unnecessary. You really only need to ensure
 
 Doing things this way allows you to store and reference multiple different versions of the Bible:
 
-![[Pasted image 20240821090423.png]]
+![Pasted image 20240821090423](https://github.com/user-attachments/assets/378798fc-7f40-4862-99f9-8cbe97ca6301)
 
 Beyond that, everything else (section headings, footnotes, links) is optional. Be careful not to add odd characters or extra text in the verses, or they will show up when you reference them. Currently, referencing will ignore headings, footnotes and anything after a [horizontal rule](https://help.obsidian.md/Editing+and+formatting/Basic+formatting+syntax#Horizontal+rule).
 
