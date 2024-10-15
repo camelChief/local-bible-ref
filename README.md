@@ -10,7 +10,7 @@ This plugin takes heavy inspiration from the [Bible Reference](https://github.co
 
 ### Getting Started
 
-To start with, you will need to create a Bible in your own vault. Some instructions on this can be found [below](#-bible-markdown-format) (this plugin uses a different markdown format to *Bible Linker*). Once you've done that, open up the *Local Bible Ref* settings and fill out the *Bibles Path* and *Default Version Shorthand* fields. Then, to use the plugin, simply open a new note and use the `--` reference prefix to grab a passage of scripture. There are also additional options (similar to terminal command options) you can provide to the reference to indicate which version to use and what markdown format to display the passage in. More information can be found [below](#-usage).
+To start with, you will need to create a Bible in your own vault. Some instructions on this can be found [below](#bible-markdown-format) (this plugin uses a different markdown format to *Bible Linker*). Once you've done that, open up the *Local Bible Ref* settings and fill out the *Bibles Path* and *Default Version Shorthand* fields. Then, to use the plugin, simply open a new note and use the `--` reference prefix to grab a passage of scripture. There are also additional options (similar to terminal command options) you can provide to the reference to indicate which version to use and what markdown format to display the passage in. More information can be found [below](#usage).
 
 ![localBibleRef](https://github.com/user-attachments/assets/5904e42c-790e-4d11-9f00-e2ce8c81097c)
 
