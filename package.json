@@ -1,7 +1,7 @@
 {
 	"name": "local-bible-ref",
 	"version": "1.0.1",
-	"description": "Quickly and easily reference Bible verses stored locally in your Obsidian vault.",
+	"description": "Quickly and easily reference Bible passages stored locally in your Obsidian vault.",
 	"main": "main.js",
 	"scripts": {
 		"dev": "node esbuild.config.mjs",
@@ -9,7 +9,7 @@
 		"version": "node version-bump.mjs && git add manifest.json versions.json"
 	},
 	"keywords": [],
-	"author": "",
+	"author": "Caleb Campbell",
 	"license": "MIT",
 	"devDependencies": {
 		"@types/node": "^16.11.6",

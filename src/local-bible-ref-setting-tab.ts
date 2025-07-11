@@ -1,5 +1,6 @@
-import LocalBibleRefPlugin from "main";
-import { App, Notice, PluginSettingTab, Setting } from "obsidian";
+import LocalBibleRefPlugin from 'main';
+import { App, Notice, PluginSettingTab, Setting } from 'obsidian';
+import { PassageFormat } from './passage-reference';
 
 export default class LocalBibleRefSettingTab extends PluginSettingTab {
 	plugin: LocalBibleRefPlugin;
@@ -13,14 +14,13 @@ export default class LocalBibleRefSettingTab extends PluginSettingTab {
 		const { containerEl } = this;
 		containerEl.empty();
 
-        this.containerEl.createEl('h1', { text: 'Local Bible Ref' });
-
         let biblesPathTimeout: NodeJS.Timeout;
         new Setting(containerEl)
-			.setName("Bibles Path")
-			.setDesc("The path to the folder containing your bibles.")
+			.setName('Bibles Path')
+			.setDesc('The path to the folder containing your bibles.')
 			.addText(text => text
-				.setPlaceholder("e.g. Data/Bibles")
+				.setPlaceholder('e.g. Data/Bibles')
+                .setValue(this.plugin.settings.biblesPath)
 				.onChange(async (value) => {
 					this.plugin.settings.biblesPath = value;
 					await this.plugin.saveSettings();
@@ -29,15 +29,16 @@ export default class LocalBibleRefSettingTab extends PluginSettingTab {
                     biblesPathTimeout = setTimeout(async () => {
                         const exists = await this.app.vault.adapter.exists(value);
                         if (!exists) new Notice(`Bibles folder doesn't exist at path: ${value}.`);
-                    }, 500);
+                    }, 1000);
 				}));
 
         let defaultVersionTimeout: NodeJS.Timeout;
         new Setting(containerEl)
-            .setName("Default Version Shorthand")
-            .setDesc("The version to use by default - shorthand.")
+            .setName('Default Version Shorthand')
+            .setDesc('The version to use by default - shorthand.')
             .addText(text => text
-                .setPlaceholder("e.g. ESV")
+                .setPlaceholder('e.g. NIV')
+                .setValue(this.plugin.settings.defaultVersionShorthand)
                 .onChange(async (value) => {
                     this.plugin.settings.defaultVersionShorthand = value;
                     await this.plugin.saveSettings();
@@ -47,7 +48,22 @@ export default class LocalBibleRefSettingTab extends PluginSettingTab {
                         const path = `${this.plugin.settings.biblesPath}/${value}`;
                         const exists = await this.app.vault.adapter.exists(path);
                         if (!exists) new Notice(`Version folder doesn't exist at path: ${path}.`);
-                    }, 500);
+                    }, 1000);
+                }));
+
+        new Setting(containerEl)
+            .setName('Default Passage Format')
+            .setDesc('The markdown format to use for passages by default.')
+            .addDropdown(dropdown => dropdown
+                .addOptions({
+                    paragraph: 'Paragraph',
+                    quote: 'Quote',
+                    callout: 'Callout',
+                })
+                .setValue(this.plugin.settings.defaultPassageFormat)
+                .onChange(async (value) => {
+                    this.plugin.settings.defaultPassageFormat = value as PassageFormat;
+                    await this.plugin.saveSettings();
                 }));
 	}
 }

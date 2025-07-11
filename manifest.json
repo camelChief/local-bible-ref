@@ -3,8 +3,8 @@
 	"name": "Local Bible Ref",
 	"version": "1.0.1",
 	"minAppVersion": "0.15.0",
-	"description": "Quickly and easily reference Bible verses stored locally in your Obsidian vault.",
-	"author": "calebcampbell",
+	"description": "Quickly and easily reference Bible passages stored locally in your Obsidian vault.",
+	"author": "Caleb Campbell",
 	"authorUrl": "https://mastodon.social/@calebcampbell",
 	"fundingUrl": "",
 	"isDesktopOnly": false
