@@ -175,7 +175,7 @@ export class PassageReference implements ChapterReference, PassageOptions {
 
 		// there are special keywords for formatting (m or manuscript, for
 		// example) - anything else is treated as a Bible version code
-		for (let option of optionArgs) {
+		for (const option of optionArgs) {
 			switch (option) {
 				case "m":
 				case "manuscript":

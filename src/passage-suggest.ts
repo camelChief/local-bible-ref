@@ -110,7 +110,7 @@ export class PassageSuggest extends EditorSuggest<PassageSuggestion> {
 		ref: PassageReference
 	): Promise<string[] | null> {
 		let basePath = "";
-		for (let alias of [ref.book.name, ...ref.book.aliases]) {
+		for (const alias of [ref.book.name, ...ref.book.aliases]) {
 			basePath = [this.settings.biblesPath, ref.version, alias].join("/");
 
 			// if the book exists at this alias, use the alias instead
@@ -210,14 +210,14 @@ export class PassageSuggest extends EditorSuggest<PassageSuggestion> {
 	private removeBOF(text: string): string {
 		if (!text.startsWith("---")) return text;
 		// split at YAML front matter
-		let split = text.split(/^\-\-\-$/m);
+		const split = text.split(/^---$/m);
 		return split[2].trim();
 	}
 
 	/** Removes the end-of-file content from the given text. */
 	private removeEOF(text: string): string {
 		// split at chapter divider
-		let split = text.split(/^\-\-\-$/m);
+		let split = text.split(/^---$/m);
 		// split at footnotes
 		split = split[0].split(/^\[\^\d+\]:/m, 1);
 		return split[0].trim();
@@ -262,7 +262,7 @@ export class PassageSuggest extends EditorSuggest<PassageSuggestion> {
 				formatted = formatted.replace(/\n/gm, "\n> ");
 				formatted += "\n\n";
 				break;
-			case PassageFormat.Callout:
+			case PassageFormat.Callout: {
                 const passageReference = passageRef.stringify();
                 const passageLink = this.generatePassageLink(passageRef, context);
 				formatted = `> [!quote] [${passageReference}](${passageLink})\n`;
@@ -270,6 +270,7 @@ export class PassageSuggest extends EditorSuggest<PassageSuggestion> {
 				formatted = formatted.replace(/\n/gm, "\n> ");
 				formatted += "\n\n";
 				break;
+			}
 		}
 
         return formatted;
