@@ -42,11 +42,11 @@ Syntax: `--<reference>[+<option>]...`
 
 | Option                | Usage                                                                                                                                             | Example                     |
 | --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------- |
-| `manuscript`, `m`     | Specifies that the passage should be displayed in "manuscript" format (without chapter numbers, verse numbers or other formatting like newlines). | `--gen1:1+m`                |
-| `paragraph`, `p`      | Specifies that the passage should be displayed in a standard paragraph.                                                                           | `-- Genesis 1:1 +paragraph` |
-| `quote`, `q`          | Specifies that the passage should be displayed in [quote](https://help.obsidian.md/Editing+and+formatting/Basic+formatting+syntax#Quotes) format. | `-- John 1:1 +q`            |
-| `callout`, `c`        | Specifies that the passage should be displayed in [callout](https://help.obsidian.md/Editing+and+formatting/Callouts) format.                     | `--john1:1+callout`         |
-| any other text, `niv` | Any other text besides the options listed above will be treated as a version code.                                                                | `--gen1:1+niv` |
+| `manuscript`, `m`     | Specifies that the passage should be displayed in "manuscript" format (without chapter numbers, verse numbers or other formatting like newlines). | ![localBibleRef3](https://github.com/user-attachments/assets/736e38e3-f05e-41c0-9d0a-d27145e50e30) |
+| `paragraph`, `p`      | Specifies that the passage should be displayed in a standard paragraph.                                                                           | ![localBibleRef4](https://github.com/user-attachments/assets/d62dc0f0-4d4b-4468-b53a-b87a2f3b5384) |
+| `quote`, `q`          | Specifies that the passage should be displayed in [quote](https://help.obsidian.md/Editing+and+formatting/Basic+formatting+syntax#Quotes) format. | ![localBibleRef5](https://github.com/user-attachments/assets/59cd0a61-de28-4c51-ac38-9faf71c2e391) |
+| `callout`, `c`        | Specifies that the passage should be displayed in [callout](https://help.obsidian.md/Editing+and+formatting/Callouts) format.                     | ![localBibleRef6](https://github.com/user-attachments/assets/2256aa40-02cc-4f08-beec-e99c169855ce) |
+| any other text, `niv` | Any other text besides the options listed above will be treated as a version code.                                                                | ![localBibleRef7](https://github.com/user-attachments/assets/a7c75752-6572-482d-a807-c2dc20f1ed28) |
 
 ## Bible Markdown Format
 
