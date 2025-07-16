@@ -68,7 +68,7 @@ export class PassageReference implements ChapterReference, PassageOptions {
 		if (this.startVerse === 1 && this.endVerse === -1) {
 			if (this.startChapter === this.endChapter)
 				return (
-					this.book.name + `${this.startChapter} - ${this.version}`
+					this.book.name + ` ${this.startChapter} - ${this.version}`
 				);
 			return (
 				`${this.book.name} ${this.startChapter}-` +
@@ -81,7 +81,7 @@ export class PassageReference implements ChapterReference, PassageOptions {
 			if (this.startVerse === this.endVerse)
 				return (
 					this.book.name +
-					`${this.startChapter}:${this.startVerse} - ${this.version}`
+					` ${this.startChapter}:${this.startVerse} - ${this.version}`
 				);
 			return (
 				`${this.book.name} ${this.startChapter}:` +

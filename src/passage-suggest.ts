@@ -5,6 +5,8 @@ import {
 	EditorSuggest,
 	EditorSuggestContext,
 	EditorSuggestTriggerInfo,
+	Notice,
+	TFile,
 	TFolder,
 } from "obsidian";
 import { PassageFormat, PassageReference } from "./passage-reference";
@@ -12,6 +14,7 @@ import { LocalBibleRefSettings } from "./settings";
 
 export class PassageSuggest extends EditorSuggest<PassageSuggestion> {
 	private settings: LocalBibleRefSettings;
+	private noSettingsNotice: Notice;
 
 	constructor(app: App, settings: LocalBibleRefSettings) {
 		super(app);
@@ -21,14 +24,26 @@ export class PassageSuggest extends EditorSuggest<PassageSuggestion> {
 	onTrigger(
 		cursor: EditorPosition,
 		editor: Editor,
-		_: any
+		_: TFile | null
 	): EditorSuggestTriggerInfo | null {
-		// min ref length is 6 ('--gen1')
-		if (cursor.ch < 6) return null;
-
 		// line must start with '--'
 		const line = editor.getLine(cursor.line);
 		if (!line.startsWith("--")) return null;
+
+		// if no settings, alert user
+		if (!this.settings.biblesPath) {
+			if (!this.noSettingsNotice?.noticeEl.isShown()) {
+				const noticeText = "Local Bible Ref settings are not " +
+					"configured. Please set the bibles path before " +
+					"attempting to reference passages.";
+				this.noSettingsNotice = new Notice(noticeText);
+			}
+
+			return null;
+		}
+
+		// min ref length is 6 ('--gen1')
+		if (cursor.ch < 6) return null;
 
 		// must be a passage ref
 		const isPassage = PassageReference.regExp.test(line);
@@ -48,9 +63,14 @@ export class PassageSuggest extends EditorSuggest<PassageSuggestion> {
 	async getSuggestions(
 		context: EditorSuggestContext
 	): Promise<PassageSuggestion[]> {
+		let version = this.settings.defaultVersionShorthand;
+		if (!version) {
+			const folder = this.app.vault.getFolderByPath(this.settings.biblesPath);
+			version = folder?.children?.filter(c => c instanceof TFolder)?.first()?.name ?? '';
+		}
 		const passageRef = PassageReference.parse(
 			context.query,
-			this.settings.defaultVersionShorthand,
+			version,
 			this.settings.defaultPassageFormat,
 		);
 		if (!passageRef) return [];
@@ -90,7 +110,7 @@ export class PassageSuggest extends EditorSuggest<PassageSuggestion> {
 	}
 
 	renderSuggestion(item: PassageSuggestion, el: HTMLElement): void {
-		el.innerText = item.excerpt;
+		el.setText(item.excerpt);
 	}
 
 	selectSuggestion(

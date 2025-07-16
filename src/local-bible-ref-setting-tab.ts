@@ -1,9 +1,10 @@
 import LocalBibleRefPlugin from 'main';
 import { App, Notice, PluginSettingTab, Setting } from 'obsidian';
 import { PassageFormat } from './passage-reference';
+import { PathSuggest } from './path-suggest';
 
 export default class LocalBibleRefSettingTab extends PluginSettingTab {
-	plugin: LocalBibleRefPlugin;
+	private plugin: LocalBibleRefPlugin;
 
 	constructor(app: App, plugin: LocalBibleRefPlugin) {
 		super(app, plugin);
@@ -18,19 +19,22 @@ export default class LocalBibleRefSettingTab extends PluginSettingTab {
         new Setting(containerEl)
 			.setName('Bibles Path')
 			.setDesc('The path to the folder containing your bibles.')
-			.addText(text => text
-				.setPlaceholder('e.g. Data/Bibles')
-                .setValue(this.plugin.settings.biblesPath)
-				.onChange(async (value) => {
-					this.plugin.settings.biblesPath = value;
-					await this.plugin.saveSettings();
+			.addText(text => {
+                text.setPlaceholder('e.g. Data/Bibles')
+                    .setValue(this.plugin.settings.biblesPath)
+                    .onChange(async (value) => {
+                        this.plugin.settings.biblesPath = value;
+                        await this.plugin.saveSettings();
 
-                    clearTimeout(biblesPathTimeout);
-                    biblesPathTimeout = setTimeout(async () => {
-                        const exists = await this.app.vault.adapter.exists(value);
-                        if (!exists) new Notice(`Bibles folder doesn't exist at path: ${value}.`);
-                    }, 1000);
-				}));
+                        clearTimeout(biblesPathTimeout);
+                        biblesPathTimeout = setTimeout(async () => {
+                            const exists = await this.app.vault.adapter.exists(value);
+                            if (!exists) new Notice(`Bibles folder doesn't exist at path: ${value}.`);
+                        }, 1000);
+                    });
+                
+                new PathSuggest(this.app, text.inputEl);
+            });
 
         let defaultVersionTimeout: NodeJS.Timeout;
         new Setting(containerEl)
