@@ -1,6 +1,6 @@
 # Local Bible Ref
 
-Quickly and easily reference Bible passages stored locally in your Obsidian vault.
+Quickly and easily reference Bible passages stored locally in your vault.
 
 ## Basics
 
