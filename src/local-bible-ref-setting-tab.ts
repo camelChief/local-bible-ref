@@ -15,9 +15,9 @@ export default class LocalBibleRefSettingTab extends PluginSettingTab {
 		const { containerEl } = this;
 		containerEl.empty();
 
-        let biblesPathTimeout: NodeJS.Timeout;
+        let biblesPathTimeout: number;
         new Setting(containerEl)
-			.setName('Bibles Path')
+			.setName('Bibles path')
 			.setDesc('The path to the folder containing your bibles.')
 			.addText(text => {
                 text.setPlaceholder('e.g. Data/Bibles')
@@ -27,7 +27,7 @@ export default class LocalBibleRefSettingTab extends PluginSettingTab {
                         await this.plugin.saveSettings();
 
                         clearTimeout(biblesPathTimeout);
-                        biblesPathTimeout = setTimeout(async () => {
+                        biblesPathTimeout = window.setTimeout(async () => {
                             const exists = await this.app.vault.adapter.exists(value);
                             if (!exists) new Notice(`Bibles folder doesn't exist at path: ${value}.`);
                         }, 1000);
@@ -36,9 +36,9 @@ export default class LocalBibleRefSettingTab extends PluginSettingTab {
                 new PathSuggest(this.app, text.inputEl);
             });
 
-        let defaultVersionTimeout: NodeJS.Timeout;
+        let defaultVersionTimeout: number;
         new Setting(containerEl)
-            .setName('Default Version Shorthand')
+            .setName('Default version shorthand')
             .setDesc('The version to use by default - shorthand.')
             .addText(text => text
                 .setPlaceholder('e.g. NIV')
@@ -48,7 +48,7 @@ export default class LocalBibleRefSettingTab extends PluginSettingTab {
                     await this.plugin.saveSettings();
 
                     clearTimeout(defaultVersionTimeout);
-                    defaultVersionTimeout = setTimeout(async () => {
+                    defaultVersionTimeout = window.setTimeout(async () => {
                         const path = `${this.plugin.settings.biblesPath}/${value}`;
                         const exists = await this.app.vault.adapter.exists(path);
                         if (!exists) new Notice(`Version folder doesn't exist at path: ${path}.`);
@@ -56,7 +56,7 @@ export default class LocalBibleRefSettingTab extends PluginSettingTab {
                 }));
 
         new Setting(containerEl)
-            .setName('Default Passage Format')
+            .setName('Default passage format')
             .setDesc('The markdown format to use for passages by default.')
             .addDropdown(dropdown => dropdown
                 .addOptions({

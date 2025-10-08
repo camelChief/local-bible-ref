@@ -6,6 +6,5 @@
 	"description": "Quickly and easily reference Bible passages stored locally in your vault.",
 	"author": "Caleb Campbell",
 	"authorUrl": "https://mastodon.social/@calebcampbell",
-	"fundingUrl": "",
-	"isDesktopOnly": true
+	"isDesktopOnly": false
 }

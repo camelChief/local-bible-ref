@@ -32,7 +32,7 @@ export class PassageSuggest extends EditorSuggest<PassageSuggestion> {
 
 		// if no settings, alert user
 		if (!this.settings.biblesPath) {
-			if (!this.noSettingsNotice?.noticeEl.isShown()) {
+			if (!this.noSettingsNotice?.messageEl.isShown()) {
 				const noticeText = "Local Bible Ref settings are not " +
 					"configured. Please set the bibles path before " +
 					"attempting to reference passages.";
@@ -283,9 +283,8 @@ export class PassageSuggest extends EditorSuggest<PassageSuggestion> {
 				formatted += "\n\n";
 				break;
 			case PassageFormat.Callout: {
-                const passageReference = passageRef.stringify();
-                const passageLink = this.generatePassageLink(passageRef, context);
-				formatted = `> [!quote] [${passageReference}](${passageLink})\n`;
+				const passageLink = this.generatePassageLink(passageRef, context);
+				formatted = `> [!quote] ${passageLink}\n`;
 				formatted += texts.join("\n\n").trim();
 				formatted = formatted.replace(/\n/gm, "\n> ");
 				formatted += "\n\n";
@@ -301,17 +300,17 @@ export class PassageSuggest extends EditorSuggest<PassageSuggestion> {
 		ref: PassageReference,
 		context: EditorSuggestContext
 	): string {
-		let link = "";
-		let folder: TFolder | null = context.file.parent;
-		while (folder?.parent) {
-			link += "../";
-			folder = folder.parent;
-		}
-
 		const { version, book, startChapter } = ref;
-		link += `${this.settings.biblesPath}/${version}/` +
-			`${book.name}/${book.name} ${startChapter}.md`;
-		return link.replace(/ /g, "%20");
+		const filePath = `${this.settings.biblesPath}/${version}/${book.name}/${book.name} ${startChapter}.md`;
+		const file = this.app.vault.getFileByPath(filePath);
+		if (!file) return ref.stringify();
+		
+		return this.app.fileManager.generateMarkdownLink(
+			file,
+			context.file.path,
+			undefined,
+			ref.stringify(),
+		);
 	}
 }
 
