@@ -1,7 +1,8 @@
 import LocalBibleRefPlugin from 'main';
-import { App, Notice, PluginSettingTab, Setting } from 'obsidian';
+import { App, normalizePath, Notice, PluginSettingTab, Setting, TextComponent } from 'obsidian';
 import { PassageFormat } from './passage-reference';
 import { PathSuggest } from './path-suggest';
+import { VersionSuggest } from './version-suggest';
 
 export default class LocalBibleRefSettingTab extends PluginSettingTab {
 	private plugin: LocalBibleRefPlugin;
@@ -23,13 +24,24 @@ export default class LocalBibleRefSettingTab extends PluginSettingTab {
                 text.setPlaceholder('e.g. Data/Bibles')
                     .setValue(this.plugin.settings.biblesPath)
                     .onChange(async (value) => {
-                        this.plugin.settings.biblesPath = value;
+                        // toggle visibility of default version setting
+                        if (value) {
+                            defaultVersionSetting.settingEl.style.display = 'flex';
+                        } else {
+                            defaultVersionSetting.settingEl.style.display = 'none';
+                            (defaultVersionSetting.components[0] as TextComponent).inputEl.value = '';
+                            this.plugin.settings.defaultVersionShorthand = '';
+                        }
+
+                        const path = value ? normalizePath(value) : '';
+                        this.plugin.settings.biblesPath = path;
                         await this.plugin.saveSettings();
 
                         clearTimeout(biblesPathTimeout);
                         biblesPathTimeout = window.setTimeout(async () => {
-                            const exists = await this.app.vault.adapter.exists(value);
-                            if (!exists) new Notice(`Bibles folder doesn't exist at path: ${value}.`);
+                            if (!path) return;
+                            const exists = this.app.vault.getFolderByPath(path);
+                            if (!exists) new Notice(`Folder doesn't exist at path: ${path}.`);
                         }, 1000);
                     });
                 
@@ -37,23 +49,29 @@ export default class LocalBibleRefSettingTab extends PluginSettingTab {
             });
 
         let defaultVersionTimeout: number;
-        new Setting(containerEl)
+        const defaultVersionSetting = new Setting(containerEl)
             .setName('Default version shorthand')
-            .setDesc('The version to use by default - shorthand.')
-            .addText(text => text
-                .setPlaceholder('e.g. NIV')
-                .setValue(this.plugin.settings.defaultVersionShorthand)
-                .onChange(async (value) => {
-                    this.plugin.settings.defaultVersionShorthand = value;
-                    await this.plugin.saveSettings();
+            .setDesc('The version to use by default - shorthand. This should correspond to a folder in the bibles folder selected above.')
+            .addText(text => {
+                text.setPlaceholder('e.g. NIV')
+                    .setValue(this.plugin.settings.defaultVersionShorthand)
+                    .onChange(async (value) => {
+                        this.plugin.settings.defaultVersionShorthand = value;
+                        await this.plugin.saveSettings();
 
-                    clearTimeout(defaultVersionTimeout);
-                    defaultVersionTimeout = window.setTimeout(async () => {
-                        const path = `${this.plugin.settings.biblesPath}/${value}`;
-                        const exists = await this.app.vault.adapter.exists(path);
-                        if (!exists) new Notice(`Version folder doesn't exist at path: ${path}.`);
-                    }, 1000);
-                }));
+                        clearTimeout(defaultVersionTimeout);
+                        defaultVersionTimeout = window.setTimeout(async () => {
+                            const path = `${this.plugin.settings.biblesPath}/${value}`;
+                            const exists = this.app.vault.getFolderByPath(normalizePath(path));
+                            if (!exists) new Notice(`Folder doesn't exist at path: ${path}.`);
+                        }, 1000);
+                    });
+
+                new VersionSuggest(this.app, text.inputEl, this.plugin.settings);
+            });
+
+        defaultVersionSetting.settingEl.style.display =
+            this.plugin.settings.biblesPath ? 'flex' : 'none';
 
         new Setting(containerEl)
             .setName('Default passage format')

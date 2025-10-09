@@ -5,6 +5,7 @@ import {
 	EditorSuggest,
 	EditorSuggestContext,
 	EditorSuggestTriggerInfo,
+	normalizePath,
 	Notice,
 	TFile,
 	TFolder,
@@ -132,10 +133,11 @@ export class PassageSuggest extends EditorSuggest<PassageSuggestion> {
 		let basePath = "";
 		for (const alias of [ref.book.name, ...ref.book.aliases]) {
 			basePath = [this.settings.biblesPath, ref.version, alias].join("/");
+			basePath = normalizePath(basePath);
 
 			// if the book exists at this alias, use the alias instead
 			// and add the previous book name to the aliases
-			if (await this.app.vault.adapter.exists(basePath)) {
+			if (this.app.vault.getFolderByPath(basePath)) {
 				ref.book.aliases.push(ref.book.name);
 				ref.book.aliases.remove(alias);
 				ref.book.name = alias;
@@ -148,7 +150,7 @@ export class PassageSuggest extends EditorSuggest<PassageSuggestion> {
 		// collect chapter texts
 		for (let ch = ref.startChapter; ch <= ref.endChapter; ch++) {
 			const path = basePath + `/${ref.book.name} ${ch}.md`;
-			const file = this.app.vault.getFileByPath(path);
+			const file = this.app.vault.getFileByPath(normalizePath(path));
 			if (!file) return null;
 
 			texts.push(await this.app.vault.cachedRead(file));
@@ -301,8 +303,8 @@ export class PassageSuggest extends EditorSuggest<PassageSuggestion> {
 		context: EditorSuggestContext
 	): string {
 		const { version, book, startChapter } = ref;
-		const filePath = `${this.settings.biblesPath}/${version}/${book.name}/${book.name} ${startChapter}.md`;
-		const file = this.app.vault.getFileByPath(filePath);
+		const path = `${this.settings.biblesPath}/${version}/${book.name}/${book.name} ${startChapter}.md`;
+		const file = this.app.vault.getFileByPath(normalizePath(path));
 		if (!file) return ref.stringify();
 		
 		return this.app.fileManager.generateMarkdownLink(
