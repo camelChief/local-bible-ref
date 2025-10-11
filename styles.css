@@ -1,4 +1,3 @@
-.callout[data-callout="bible"] {
-    --callout-color: var(--callout-quote);
-    --callout-icon: lucide-book-open-text;
+div.setting-item.hidden {
+    display: none;
 }

@@ -26,9 +26,9 @@ export default class LocalBibleRefSettingTab extends PluginSettingTab {
                     .onChange(async (value) => {
                         // toggle visibility of default version setting
                         if (value) {
-                            defaultVersionSetting.settingEl.style.display = 'flex';
+                            defaultVersionSetting.settingEl.removeClass('hidden');
                         } else {
-                            defaultVersionSetting.settingEl.style.display = 'none';
+                            defaultVersionSetting.settingEl.addClass('hidden');
                             (defaultVersionSetting.components[0] as TextComponent).inputEl.value = '';
                             this.plugin.settings.defaultVersionShorthand = '';
                         }
@@ -70,8 +70,11 @@ export default class LocalBibleRefSettingTab extends PluginSettingTab {
                 new VersionSuggest(this.app, text.inputEl, this.plugin.settings);
             });
 
-        defaultVersionSetting.settingEl.style.display =
-            this.plugin.settings.biblesPath ? 'flex' : 'none';
+        if (this.plugin.settings.biblesPath) {
+            defaultVersionSetting.settingEl.removeClass('hidden');
+        } else {
+            defaultVersionSetting.settingEl.addClass('hidden');
+        }
 
         new Setting(containerEl)
             .setName('Default passage format')
