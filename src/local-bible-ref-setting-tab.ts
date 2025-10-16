@@ -26,9 +26,9 @@ export default class LocalBibleRefSettingTab extends PluginSettingTab {
                     .onChange(async (value) => {
                         // toggle visibility of default version setting
                         if (value) {
-                            defaultVersionSetting.settingEl.removeClass('hidden');
+                            defaultVersionSetting.settingEl.removeClass('local-bible-ref-hidden');
                         } else {
-                            defaultVersionSetting.settingEl.addClass('hidden');
+                            defaultVersionSetting.settingEl.addClass('local-bible-ref-hidden');
                             (defaultVersionSetting.components[0] as TextComponent).inputEl.value = '';
                             this.plugin.settings.defaultVersionShorthand = '';
                         }
@@ -71,9 +71,9 @@ export default class LocalBibleRefSettingTab extends PluginSettingTab {
             });
 
         if (this.plugin.settings.biblesPath) {
-            defaultVersionSetting.settingEl.removeClass('hidden');
+            defaultVersionSetting.settingEl.removeClass('local-bible-ref-hidden');
         } else {
-            defaultVersionSetting.settingEl.addClass('hidden');
+            defaultVersionSetting.settingEl.addClass('local-bible-ref-hidden');
         }
 
         new Setting(containerEl)
