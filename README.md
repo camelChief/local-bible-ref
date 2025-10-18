@@ -69,6 +69,8 @@ Doing things this way allows you to store and reference multiple different versi
 
 Beyond that, everything else (section headings, footnotes, links) is optional. Be careful not to add odd characters or extra text in the verses, or they will show up when you reference them. Currently, referencing will ignore YAML frontmatter, headings, chapter numbers (any bolded digits), footnotes and anything after a [horizontal rule](https://help.obsidian.md/Editing+and+formatting/Basic+formatting+syntax#Horizontal+rule).
 
+If all of this seems a bit confusing, please check out the aforementioned [markdown formatted WEB](https://github.com/camelChief/markdown-webp) to help you understand the formatting requirements.
+
 ## Limitations
 
 - Bible referencing **does not work** with the *Bible Linker* style of markdown Bible.
