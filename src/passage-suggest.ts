@@ -106,7 +106,7 @@ export class PassageSuggest extends EditorSuggest<PassageSuggestion> {
 		});
 
 		// suggest
-    const excerpt = this.generateExcerpt(texts[0]);
+		const excerpt = this.generateExcerpt(texts[0]);
 		const text = this.formatTexts(texts, passageRef, context);
 		return [{ excerpt, text }];
 	}
