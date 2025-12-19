@@ -1,5 +1,5 @@
 import { Plugin } from 'obsidian';
-import LocalBibleRefSettingTab from 'src/local-bible-ref-setting-tab';
+import LocalBibleRefSettingTab, { BibleFormat } from 'src/local-bible-ref-setting-tab';
 import { PassageFormat } from 'src/passage-reference';
 import { PassageSuggest } from 'src/passage-suggest';
 import { LocalBibleRefSettings } from 'src/settings';
@@ -20,7 +20,8 @@ export default class LocalBibleRefPlugin extends Plugin {
 		this.settings ??= {
 			biblesPath: '',
 			defaultVersionShorthand: '',
-			defaultPassageFormat: PassageFormat.Callout
+			defaultPassageFormat: PassageFormat.Callout,
+			bibleFormat: BibleFormat.LocalBibleRef,
 		};
 	}
 

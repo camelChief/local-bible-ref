@@ -12,6 +12,7 @@ import {
 } from "obsidian";
 import { PassageFormat, PassageReference } from "./passage-reference";
 import { LocalBibleRefSettings } from "./settings";
+import { BibleFormat } from "./local-bible-ref-setting-tab";
 
 export class PassageSuggest extends EditorSuggest<PassageSuggestion> {
 	private settings: LocalBibleRefSettings;
@@ -105,7 +106,7 @@ export class PassageSuggest extends EditorSuggest<PassageSuggestion> {
 		});
 
 		// suggest
-        const excerpt = this.generateExcerpt(texts[0]);
+    const excerpt = this.generateExcerpt(texts[0]);
 		const text = this.formatTexts(texts, passageRef, context);
 		return [{ excerpt, text }];
 	}
@@ -164,9 +165,17 @@ export class PassageSuggest extends EditorSuggest<PassageSuggestion> {
 		text: string,
 		ref: PassageReference
 	): string | null {
-		const regExp = new RegExp(
-			`(?:[>-] )*(?:\\*\\*\\d{1,3}\\*\\* )?<sup>${ref.startVerse}</sup>`
-		);
+		let pattern = '';
+		if (this.settings.bibleFormat === BibleFormat.BibleLinker) {
+			pattern = `#{1,6} [a-zA-Z]*${ref.startVerse}[a-zA-Z]*\\n\\w+`;
+		} else {
+			const quoteOrList = '(?:[>-] )*';
+			const chapterNum = '(?:\\*\\*\\d{1,3}\\*\\* )?';
+			const verseNum = `<sup>${ref.startVerse}</sup>`;
+			pattern = quoteOrList + chapterNum + verseNum;
+		}
+		
+		const regExp = new RegExp(pattern);
 		const match = text.match(regExp);
 		if (!match) return null;
 
@@ -181,10 +190,17 @@ export class PassageSuggest extends EditorSuggest<PassageSuggestion> {
 		ref: PassageReference
 	): string | null {
 		if (ref.endVerse === -1) return text;
-		const regex = new RegExp(
-			`(?:^(?:> |- )*)?<sup>${ref.endVerse + 1}</sup>`,
-			"m"
-		);
+
+		let pattern = '';
+		if (this.settings.bibleFormat === BibleFormat.BibleLinker) {
+			pattern = `#{1,6} [a-zA-Z]*${ref.endVerse + 1}[a-zA-Z]*\\n\\w+`;
+		} else {
+			const quoteOrList = '(?:[>-] )*';
+			const verseNum = `<sup>${ref.endVerse + 1}</sup>`;
+			pattern = quoteOrList + verseNum;
+		}
+
+		const regex = new RegExp(pattern);
 		return text.split(regex, 1)[0].trim();
 	}
 
@@ -193,11 +209,19 @@ export class PassageSuggest extends EditorSuggest<PassageSuggestion> {
 		chapterNumber: number,
 		multipleChapters: boolean
 	): string {
+		if (this.settings.bibleFormat === BibleFormat.BibleLinker) {
+			text = this.formatBibleLinkerVerses(text);
+		}
+
 		text = this.removeChapterNumbers(text);
 		text = this.removeHeadings(text);
 		text = this.removeFootnoteRefs(text);
 		text = this.removeBOF(text);
 		text = this.removeEOF(text);
+
+		if (this.settings.bibleFormat === BibleFormat.BibleLinker) {
+			text = this.removeVerseSpacing(text);
+		}
 
 		const chapterMd = multipleChapters ? `**${chapterNumber}**` : "";
 		if (text.startsWith("> ")) {
@@ -211,6 +235,14 @@ export class PassageSuggest extends EditorSuggest<PassageSuggestion> {
 		}
 
 		return (text = `${chapterMd} ${text}`);
+	}
+
+	/** Formats verses that use Bible Linker formatting. */
+	private formatBibleLinkerVerses(text: string): string {
+		return text.replace(
+			/#{1,6} [a-zA-Z]*(\d{1,3})[a-zA-Z]*\n(\w+)/g,
+			"<sup>$1</sup> $2",
+		);
 	}
 
 	/** Removes chapter numbers from the given text. */
@@ -243,6 +275,11 @@ export class PassageSuggest extends EditorSuggest<PassageSuggestion> {
 		// split at footnotes
 		split = split[0].split(/^\[\^\d+\]:/m, 1);
 		return split[0].trim();
+	}
+
+	/** Removes extra spacing between verses in Bible Linker formatting. */
+	private removeVerseSpacing(text: string): string {
+		return text.replace(/\n{2,}/g, " ");
 	}
 
 	/** Generates an excerpt for the suggestion. */
@@ -302,15 +339,17 @@ export class PassageSuggest extends EditorSuggest<PassageSuggestion> {
 		ref: PassageReference,
 		context: EditorSuggestContext
 	): string {
-		const { version, book, startChapter } = ref;
+		const { version, book, startChapter, startVerse } = ref;
 		const path = `${this.settings.biblesPath}/${version}/${book.name}/${book.name} ${startChapter}.md`;
 		const file = this.app.vault.getFileByPath(normalizePath(path));
 		if (!file) return ref.stringify();
-		
+
 		return this.app.fileManager.generateMarkdownLink(
 			file,
 			context.file.path,
-			undefined,
+			this.settings.bibleFormat === BibleFormat.BibleLinker
+				? `#${startVerse}`
+				: undefined,
 			ref.stringify(),
 		);
 	}
