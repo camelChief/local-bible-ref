@@ -16,6 +16,10 @@ export default class LocalBibleRefSettingTab extends PluginSettingTab {
 		const { containerEl } = this;
 		containerEl.empty();
 
+        new Setting(containerEl)
+            .setName('Configurations')
+            .setHeading();
+
         let biblesPathTimeout: number;
         new Setting(containerEl)
 			.setName('Bibles path')
@@ -47,6 +51,10 @@ export default class LocalBibleRefSettingTab extends PluginSettingTab {
                 
                 new PathSuggest(this.app, text.inputEl);
             });
+
+        new Setting(containerEl)
+            .setName('Defaults')
+            .setHeading();
 
         let defaultVersionTimeout: number;
         const defaultVersionSetting = new Setting(containerEl)
@@ -81,6 +89,7 @@ export default class LocalBibleRefSettingTab extends PluginSettingTab {
             .setDesc('The markdown format to use for passages by default.')
             .addDropdown(dropdown => dropdown
                 .addOptions({
+                    manuscript: 'Manuscript',
                     paragraph: 'Paragraph',
                     quote: 'Quote',
                     callout: 'Callout',
@@ -90,5 +99,24 @@ export default class LocalBibleRefSettingTab extends PluginSettingTab {
                     this.plugin.settings.defaultPassageFormat = value as PassageFormat;
                     await this.plugin.saveSettings();
                 }));
+
+        new Setting(containerEl)
+            .setName('Bible Format')
+            .setDesc('The formatting style you use for your vault bibles. Local Bible Ref relies on this to parse passages correctly.')
+            .addDropdown(dropdown => dropdown
+                .addOptions({
+                    localBibleRef: 'Local Bible Ref',
+                    bibleLinker: 'Bible Linker',
+                })
+                .setValue(this.plugin.settings.bibleFormat)
+                .onChange(async (value) => {
+                    this.plugin.settings.bibleFormat = value as BibleFormat;
+                    await this.plugin.saveSettings();
+                }));
 	}
+}
+
+export enum BibleFormat {
+    LocalBibleRef = 'localBibleRef',
+    BibleLinker = 'bibleLinker',
 }
