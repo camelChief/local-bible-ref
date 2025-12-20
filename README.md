@@ -10,7 +10,11 @@ This plugin takes heavy inspiration from the [Bible Reference](https://github.co
 
 ### Getting Started
 
-To start with, you will need to format a Bible for your own vault. Some instructions on this can be found [below](#bible-markdown-format) (this plugin uses a different markdown format to *Bible Linker*). I've also already formatted the Public Domain World English Bible so you can [download](https://github.com/camelChief/markdown-webp) that and just get started. Once you've done that, open up the *Local Bible Ref* settings and fill in at least the *Bibles path* field. Then, to use the plugin, simply open a new note and use the `--` reference prefix to grab a passage of scripture. There are also additional options (similar to terminal command options) you can provide to the reference to indicate which version to use and what markdown format to display the passage in. More information can be found [below](#usage).
+To start with, you will need to format a Bible for your own vault.
+
+If you would like to use your vault Bible for reading, I would encourage you to format it in the original *Local Bible Ref* format. Some instructions on this can be found [below](#bible-markdown-format). I've also already formatted the Public Domain World English Bible so you can [download](https://github.com/camelChief/markdown-webp) that and just get started. If you don't want to go to all that hassle, you can use your existing *Bible Linker* Bible with this plugin! In order to do that, simply select "Bible Linker" as your Bible format in the *Local Bible Ref* settings.
+
+Once you've done that, open up the *Local Bible Ref* settings and fill in at least the *Bibles path* field. Then, to use the plugin, simply open a new note and use the `--` reference prefix to grab a passage of scripture. There are also additional options (similar to terminal command options) you can provide to the reference to indicate which version to use and what markdown format to display the passage in. More information can be found [below](#usage).
 
 ![localBibleRef1](https://github.com/user-attachments/assets/b8b5440b-8f47-4462-987e-a52791d758be)
 
@@ -34,7 +38,7 @@ The referencing syntax also allows for a lot of flexibility:
 
 ### Options
 
-Local Bible Ref also allows you to provide a few options to a reference to specify which version you would like to use as well as what markdown format to use. Add an option to a reference by adding a `+` followed by the option (in any order): `--gen1:1-5+esv`
+*Local Bible Ref* also allows you to provide a few options to a reference to specify which version you would like to use as well as what markdown format to use. Add an option to a reference by adding a `+` followed by the option (in any order): `--gen1:1-5+esv`
 
 You can also pass multiple options by simply chaining them: `-- John 1:1 +quote +esv`
 
@@ -73,5 +77,4 @@ If all of this seems a bit confusing, please check out the aforementioned [markd
 
 ## Limitations
 
-- Bible referencing **does not work** with the *Bible Linker* style of markdown Bible.
 - Referencing does not yet support multiple passages: `Genesis 1:1; John 1:1`
