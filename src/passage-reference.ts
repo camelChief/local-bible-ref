@@ -1,6 +1,6 @@
 import { Book, BOOKS } from "./books";
 
-export class PassageReference implements ChapterReference, PassageOptions {
+export default class PassageReference implements ChapterReference, PassageOptions {
 	startChapter: number;
 	startVerse: number;
 	endChapter: number;

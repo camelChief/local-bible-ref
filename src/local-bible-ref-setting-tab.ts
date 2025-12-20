@@ -1,8 +1,9 @@
 import LocalBibleRefPlugin from 'main';
 import { App, normalizePath, Notice, PluginSettingTab, Setting, TextComponent } from 'obsidian';
 import { PassageFormat } from './passage-reference';
-import { PathSuggest } from './path-suggest';
-import { VersionSuggest } from './version-suggest';
+import PathSuggest from './path-suggest';
+import { CalloutType, QuoteReferencePosition } from './settings';
+import VersionSuggest from './version-suggest';
 
 export default class LocalBibleRefSettingTab extends PluginSettingTab {
 	private plugin: LocalBibleRefPlugin;
@@ -17,7 +18,7 @@ export default class LocalBibleRefSettingTab extends PluginSettingTab {
 		containerEl.empty();
 
         new Setting(containerEl)
-            .setName('Configurations')
+            .setName('Required Settings')
             .setHeading();
 
         let biblesPathTimeout: number;
@@ -53,12 +54,12 @@ export default class LocalBibleRefSettingTab extends PluginSettingTab {
             });
 
         new Setting(containerEl)
-            .setName('Defaults')
+            .setName('Optional Settings')
             .setHeading();
 
         let defaultVersionTimeout: number;
         const defaultVersionSetting = new Setting(containerEl)
-            .setName('Default version shorthand')
+            .setName('Default version')
             .setDesc('The version to use by default - shorthand. This should correspond to a folder in the bibles folder selected above.')
             .addText(text => {
                 text.setPlaceholder('e.g. NIV')
@@ -113,7 +114,103 @@ export default class LocalBibleRefSettingTab extends PluginSettingTab {
                     this.plugin.settings.bibleFormat = value as BibleFormat;
                     await this.plugin.saveSettings();
                 }));
-	}
+
+        new Setting(containerEl)
+            .setName('Quote Format Settings')
+            .setDesc('Settings for the quote passage format.')
+            .setHeading();
+
+        new Setting(containerEl)
+            .setName('Include reference')
+            .setDesc('Whether to include a reference to the passage.')
+            .addToggle(toggle => toggle
+                .setValue(this.plugin.settings.quote.includeReference)
+                .onChange(async (value) => {
+                    // toggle visibility of other paragraph reference settings
+                    if (value) {
+                        quoteRefPositionSetting.settingEl.removeClass('local-bible-ref-hidden');
+                        quoteRefLinkSetting.settingEl.removeClass('local-bible-ref-hidden');
+                    } else {
+                        quoteRefPositionSetting.settingEl.addClass('local-bible-ref-hidden');
+                        quoteRefLinkSetting.settingEl.addClass('local-bible-ref-hidden');
+                    }
+
+                    this.plugin.settings.quote.includeReference = value;
+                    await this.plugin.saveSettings();
+                }));
+
+        const quoteRefPositionSetting = new Setting(containerEl)
+            .setName('Reference position')
+            .setDesc('Where to position the reference.')
+            .addDropdown(dropdown => dropdown
+                .addOptions({
+                    beginning: 'Beginning',
+                    end: 'End',
+                })
+                .setValue(this.plugin.settings.quote.referencePosition)
+                .onChange(async (value) => {
+                    this.plugin.settings.quote.referencePosition = value as QuoteReferencePosition;
+                    await this.plugin.saveSettings();
+                }));
+
+        const quoteRefLinkSetting = new Setting(containerEl)
+            .setName('Link to passage')
+            .setDesc('Whether the reference should link to the passage in the Bible.')
+            .addToggle(toggle => toggle
+                .setValue(this.plugin.settings.quote.linkToPassage)
+                .onChange(async (value) => {
+                    this.plugin.settings.quote.linkToPassage = value;
+                    await this.plugin.saveSettings();
+                }));
+
+        if (this.plugin.settings.quote.includeReference) {
+            quoteRefPositionSetting.settingEl.removeClass('local-bible-ref-hidden');
+            quoteRefLinkSetting.settingEl.removeClass('local-bible-ref-hidden');
+        } else {
+            quoteRefPositionSetting.settingEl.addClass('local-bible-ref-hidden');
+            quoteRefLinkSetting.settingEl.addClass('local-bible-ref-hidden');
+        }
+
+        new Setting(containerEl)
+            .setName('Callout Format Settings')
+            .setDesc('Settings for the callout passage format.')
+            .setHeading();
+
+        new Setting(containerEl)
+            .setName('Callout type')
+            .setDesc('The type of callout to use for passages.')
+            .addDropdown(dropdown => dropdown
+                .addOptions({
+                    note: 'Note',
+                    abstract: 'Abstract',
+                    info: 'Info',
+                    todo: 'Todo',
+                    tip: 'Tip',
+                    success: 'Success',
+                    question: 'Question',
+                    warning: 'Warning',
+                    failure: 'Failure',
+                    danger: 'Danger',
+                    bug: 'Bug',
+                    example: 'Example',
+                    quote: 'Quote',
+                })
+                .setValue(this.plugin.settings.callout.type)
+                .onChange(async (value) => {
+                    this.plugin.settings.callout.type = value as CalloutType;
+                    await this.plugin.saveSettings();
+                }));
+
+        new Setting(containerEl)
+            .setName('Link to passage')
+            .setDesc('Whether the reference should link to the passage in the Bible.')
+            .addToggle(toggle => toggle
+                .setValue(this.plugin.settings.callout.linkToPassage)
+                .onChange(async (value) => {
+                    this.plugin.settings.callout.linkToPassage = value;
+                    await this.plugin.saveSettings();
+                }));
+    }
 }
 
 export enum BibleFormat {

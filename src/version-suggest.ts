@@ -1,7 +1,7 @@
 import { AbstractInputSuggest, App, TFolder } from "obsidian";
-import { LocalBibleRefSettings } from "./settings";
+import LocalBibleRefSettings from "./settings";
 
-export class VersionSuggest extends AbstractInputSuggest<string> {
+export default class VersionSuggest extends AbstractInputSuggest<string> {
     private settings: LocalBibleRefSettings;
     private textInputEl: HTMLInputElement | HTMLDivElement;
 

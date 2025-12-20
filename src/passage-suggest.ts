@@ -10,11 +10,11 @@ import {
 	TFile,
 	TFolder,
 } from "obsidian";
-import { PassageFormat, PassageReference } from "./passage-reference";
-import { LocalBibleRefSettings } from "./settings";
 import { BibleFormat } from "./local-bible-ref-setting-tab";
+import PassageReference, { PassageFormat } from "./passage-reference";
+import LocalBibleRefSettings, { QuoteReferencePosition } from "./settings";
 
-export class PassageSuggest extends EditorSuggest<PassageSuggestion> {
+export default class PassageSuggest extends EditorSuggest<PassageSuggestion> {
 	private settings: LocalBibleRefSettings;
 	private noSettingsNotice: Notice;
 
@@ -295,13 +295,13 @@ export class PassageSuggest extends EditorSuggest<PassageSuggestion> {
 		return text.slice(0, 45) + "...";
 	}
 
-    /** Formats the final text for suggestion. */
-    private formatTexts(
-        texts: string[],
-        passageRef: PassageReference,
-        context: EditorSuggestContext
-    ): string {
-        let formatted = "";
+	/** Formats the final text for suggestion. */
+	private formatTexts(
+			texts: string[],
+			passageRef: PassageReference,
+			context: EditorSuggestContext
+	): string {
+		let formatted = "";
 		switch (passageRef.format) {
 			case PassageFormat.Manuscript:
 				formatted = texts.join(" ").trim();
@@ -315,15 +315,37 @@ export class PassageSuggest extends EditorSuggest<PassageSuggestion> {
 				formatted = texts.join("\n\n").trim();
 				formatted += "\n\n";
 				break;
-			case PassageFormat.Quote:
+			case PassageFormat.Quote: {
+				const {
+					includeReference,
+					referencePosition,
+					linkToPassage
+				} = this.settings.quote;
+
+				let stringRef = '';
+				if (includeReference) {
+					if (linkToPassage) stringRef = this.generatePassageLink(passageRef, context);
+					else stringRef = passageRef.stringify();
+					if (referencePosition === QuoteReferencePosition.Beginning) stringRef += "\n";
+					else stringRef = `\n> ${stringRef}`;
+				}
+
 				formatted = "> ";
+				if (referencePosition === QuoteReferencePosition.Beginning) formatted += stringRef;
 				formatted += texts.join("\n\n").trim();
 				formatted = formatted.replace(/\n/gm, "\n> ");
+				if (referencePosition === QuoteReferencePosition.End) formatted += stringRef;
 				formatted += "\n\n";
 				break;
+			}
 			case PassageFormat.Callout: {
-				const passageLink = this.generatePassageLink(passageRef, context);
-				formatted = `> [!quote] ${passageLink}\n`;
+				const { type, linkToPassage } = this.settings.callout;
+
+				let stringRef = '';
+				if (linkToPassage) stringRef = this.generatePassageLink(passageRef, context);
+				else stringRef = passageRef.stringify();
+
+				formatted = `> [!${type}] ${stringRef}\n`;
 				formatted += texts.join("\n\n").trim();
 				formatted = formatted.replace(/\n/gm, "\n> ");
 				formatted += "\n\n";
@@ -331,8 +353,8 @@ export class PassageSuggest extends EditorSuggest<PassageSuggestion> {
 			}
 		}
 
-        return formatted;
-    }
+		return formatted;
+	}
 
     /** Generates a link to the passage within the vault. */
 	private generatePassageLink(
