@@ -89,6 +89,7 @@ export default class LocalBibleRefSettingTab extends PluginSettingTab {
             .setDesc('The markdown format to use for passages by default.')
             .addDropdown(dropdown => dropdown
                 .addOptions({
+                    manuscript: 'Manuscript',
                     paragraph: 'Paragraph',
                     quote: 'Quote',
                     callout: 'Callout',
