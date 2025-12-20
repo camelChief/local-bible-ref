@@ -2,6 +2,8 @@
 
 Quickly and easily reference Bible passages stored locally in your vault.
 
+![localBibleRef1](https://github.com/user-attachments/assets/b8b5440b-8f47-4462-987e-a52791d758be)
+
 ## Basics
 
 ### Inspiration
@@ -15,8 +17,6 @@ To start with, you will need to format a Bible for your own vault.
 If you would like to use your vault Bible for reading, I would encourage you to format it in the original *Local Bible Ref* format. Some instructions on this can be found [below](#bible-markdown-format). I've also already formatted the Public Domain World English Bible so you can [download](https://github.com/camelChief/markdown-webp) that and just get started. If you don't want to go to all that hassle, you can use your existing *Bible Linker* Bible with this plugin! In order to do that, simply select "Bible Linker" as your Bible format in the *Local Bible Ref* settings.
 
 Once you've done that, open up the *Local Bible Ref* settings and fill in at least the *Bibles path* field. Then, to use the plugin, simply open a new note and use the `--` reference prefix to grab a passage of scripture. There are also additional options (similar to terminal command options) you can provide to the reference to indicate which version to use and what markdown format to display the passage in. More information can be found [below](#usage).
-
-![localBibleRef1](https://github.com/user-attachments/assets/b8b5440b-8f47-4462-987e-a52791d758be)
 
 ## Usage
 
