@@ -3,7 +3,7 @@ export interface Book {
     aliases: string[];
 }
 
-export const BOOKS: Book[] = [
+export const BOOKS_EN: Book[] = [
     { name: "Genesis", aliases: ["gen"] },
     { name: "Exodus", aliases: ["exo", "ex", "exod"] },
     { name: "Leviticus", aliases: ["lev"] },

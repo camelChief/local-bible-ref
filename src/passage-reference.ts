@@ -1,4 +1,4 @@
-import { Book, BOOKS } from "./books";
+import { Book, BOOKS_EN } from "./books/books.en";
 
 export default class PassageReference implements ChapterReference, PassageOptions {
 	startChapter: number;
@@ -52,7 +52,7 @@ export default class PassageReference implements ChapterReference, PassageOption
 	/** Builds the passage matching regular expression. */
 	static get regExp(): RegExp {
 		let regExpString = "^\\-\\- ?(";
-		regExpString += BOOKS.map(
+		regExpString += BOOKS_EN.map(
 			(b) => `${b.name}|${b.aliases.join("|")}`
 		).join("|");
 		regExpString += ") ?(\\d{1,3}(?::\\d{1,3})?" +
@@ -149,7 +149,7 @@ export default class PassageReference implements ChapterReference, PassageOption
 	/** Retrieves a book based on its alias. */
 	private static getBook(alias: string): Book | undefined {
 		alias = alias.toLowerCase();
-		return BOOKS.find((book) => {
+		return BOOKS_EN.find((book) => {
 			const aliases = book.aliases.map((a) => a.toLowerCase());
 			if (book.name.toLowerCase() === alias) return book;
 			if (aliases.includes(alias)) return book;
