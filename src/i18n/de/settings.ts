@@ -1,11 +1,11 @@
-import { Settings } from '../models';
+import { SettingsLabels } from '../models';
 
-export const SETTINGS: Settings = {
+export const SETTINGS: SettingsLabels = {
 	required: {
 		name: 'Required Settings',
 		controls: {
 			biblesPath: {
-				name: 'Bibles path',
+				name: 'Bible pathen',
 				description: 'The path to the folder containing your bibles.',
 				placeholder: 'e.g. Data/Bibles',
 			},

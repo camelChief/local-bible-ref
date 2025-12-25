@@ -4,18 +4,48 @@ export interface Book {
 	aliases: string[];
 }
 
-export interface Settings {
-	[key: string]: SettingsGroup;
-}
+export interface SettingsLabels {
+	required: {
+		name: string;
+		controls: {
+			biblesPath: ControlWithPlaceholder;
+		};
+	};
 
-interface SettingsGroup {
-	name: string;
-	description?: string;
-	controls: { [key: string]: Control };
+	optional: {
+		name: string;
+		controls: {
+			defaultVersion: ControlWithPlaceholder;
+			defaultPassageFormat: Control;
+			bibleFormat: Control;
+		};
+	};
+
+	quoteFormat: {
+		name: string;
+		description: string;
+		controls: {
+			includeReference: Control;
+			referencePosition: Control;
+			linkToPassage: Control;
+		};
+	};
+
+	calloutFormat: {
+		name: string;
+		description: string;
+		controls: {
+			calloutType: Control;
+			linkToPassage: Control;
+		};
+	};
 }
 
 interface Control {
 	name: string;
-	description?: string;
-	placeholder?: string;
+	description: string;
+}
+
+interface ControlWithPlaceholder extends Control {
+	placeholder: string;
 }

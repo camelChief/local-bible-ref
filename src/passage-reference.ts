@@ -1,4 +1,5 @@
-import { Book, BOOKS_EN } from './books/books.en';
+import { I18N } from './i18n';
+import { Book } from './i18n/models';
 
 export default class PassageReference
 	implements ChapterReference, PassageOptions
@@ -54,7 +55,7 @@ export default class PassageReference
 	/** Builds the passage matching regular expression. */
 	static get regExp(): RegExp {
 		let regExpString = '^\\-\\- ?(';
-		regExpString += BOOKS_EN.map(
+		regExpString += I18N.EN.BOOKS.map(
 			(b) => `${b.name}|${b.aliases.join('|')}`
 		).join('|');
 		regExpString +=
@@ -152,7 +153,7 @@ export default class PassageReference
 	/** Retrieves a book based on its alias. */
 	private static getBook(alias: string): Book | undefined {
 		alias = alias.toLowerCase();
-		return BOOKS_EN.find((book) => {
+		return I18N.EN.BOOKS.find((book) => {
 			const aliases = book.aliases.map((a) => a.toLowerCase());
 			if (book.name.toLowerCase() === alias) return book;
 			if (aliases.includes(alias)) return book;

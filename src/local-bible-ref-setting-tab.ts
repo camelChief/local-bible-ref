@@ -1,6 +1,7 @@
 import LocalBibleRefPlugin from 'main';
 import {
 	App,
+	getLanguage,
 	normalizePath,
 	Notice,
 	PluginSettingTab,
@@ -11,28 +12,47 @@ import { PassageFormat } from './passage-reference';
 import PathSuggest from './path-suggest';
 import { CalloutType, QuoteReferencePosition } from './settings';
 import VersionSuggest from './version-suggest';
+import { SettingsLabels } from './i18n/models';
+import { I18N } from './i18n';
+
+// STILL TODO:
+// - Need to add a 'common' labels internationalization file for non-settings labels. (e.g. notices)
+// - Need to sort out books in PassageReference to use I18N.
 
 export default class LocalBibleRefSettingTab extends PluginSettingTab {
 	private plugin: LocalBibleRefPlugin;
+	private settingsLabels: SettingsLabels;
 
 	constructor(app: App, plugin: LocalBibleRefPlugin) {
 		super(app, plugin);
 		this.plugin = plugin;
+
+		switch (getLanguage()) {
+			case 'de':
+				this.settingsLabels = I18N.DE.SETTINGS;
+				break;
+			case 'en':
+			default:
+				this.settingsLabels = I18N.EN.SETTINGS;
+				break;
+		}
 	}
 
 	display(): void {
 		const { containerEl } = this;
+		const { required, optional, quoteFormat, calloutFormat } =
+			this.settingsLabels;
 		containerEl.empty();
 
-		new Setting(containerEl).setName('Required Settings').setHeading();
+		new Setting(containerEl).setName(required.name).setHeading();
 
 		let biblesPathTimeout: number;
 		new Setting(containerEl)
-			.setName('Bibles path')
-			.setDesc('The path to the folder containing your bibles.')
+			.setName(required.controls.biblesPath.name)
+			.setDesc(required.controls.biblesPath.description)
 			.addText((text) => {
 				text
-					.setPlaceholder('e.g. Data/Bibles')
+					.setPlaceholder(required.controls.biblesPath.placeholder)
 					.setValue(this.plugin.settings.biblesPath)
 					.onChange(async (value) => {
 						// toggle visibility of default version setting
@@ -65,17 +85,15 @@ export default class LocalBibleRefSettingTab extends PluginSettingTab {
 				new PathSuggest(this.app, text.inputEl);
 			});
 
-		new Setting(containerEl).setName('Optional Settings').setHeading();
+		new Setting(containerEl).setName(optional.name).setHeading();
 
 		let defaultVersionTimeout: number;
 		const defaultVersionSetting = new Setting(containerEl)
-			.setName('Default version')
-			.setDesc(
-				'The version to use by default - shorthand. This should correspond to a folder in the bibles folder selected above.'
-			)
+			.setName(optional.controls.defaultVersion.name)
+			.setDesc(optional.controls.defaultVersion.description)
 			.addText((text) => {
 				text
-					.setPlaceholder('e.g. NIV')
+					.setPlaceholder(optional.controls.defaultVersion.placeholder)
 					.setValue(this.plugin.settings.defaultVersionShorthand)
 					.onChange(async (value) => {
 						this.plugin.settings.defaultVersionShorthand = value;
@@ -101,8 +119,8 @@ export default class LocalBibleRefSettingTab extends PluginSettingTab {
 		}
 
 		new Setting(containerEl)
-			.setName('Default passage format')
-			.setDesc('The markdown format to use for passages by default.')
+			.setName(optional.controls.defaultPassageFormat.name)
+			.setDesc(optional.controls.defaultPassageFormat.description)
 			.addDropdown((dropdown) =>
 				dropdown
 					.addOptions({
@@ -119,10 +137,8 @@ export default class LocalBibleRefSettingTab extends PluginSettingTab {
 			);
 
 		new Setting(containerEl)
-			.setName('Bible Format')
-			.setDesc(
-				'The formatting style you use for your vault bibles. Local Bible Ref relies on this to parse passages correctly.'
-			)
+			.setName(optional.controls.bibleFormat.name)
+			.setDesc(optional.controls.bibleFormat.description)
 			.addDropdown((dropdown) =>
 				dropdown
 					.addOptions({
@@ -137,13 +153,13 @@ export default class LocalBibleRefSettingTab extends PluginSettingTab {
 			);
 
 		new Setting(containerEl)
-			.setName('Quote Format Settings')
-			.setDesc('Settings for the quote passage format.')
+			.setName(quoteFormat.name)
+			.setDesc(quoteFormat.description)
 			.setHeading();
 
 		new Setting(containerEl)
-			.setName('Include reference')
-			.setDesc('Whether to include a reference to the passage.')
+			.setName(quoteFormat.controls.includeReference.name)
+			.setDesc(quoteFormat.controls.includeReference.description)
 			.addToggle((toggle) =>
 				toggle
 					.setValue(this.plugin.settings.quote.includeReference)
@@ -169,8 +185,8 @@ export default class LocalBibleRefSettingTab extends PluginSettingTab {
 			);
 
 		const quoteRefPositionSetting = new Setting(containerEl)
-			.setName('Reference position')
-			.setDesc('Where to position the reference.')
+			.setName(quoteFormat.controls.referencePosition.name)
+			.setDesc(quoteFormat.controls.referencePosition.description)
 			.addDropdown((dropdown) =>
 				dropdown
 					.addOptions({
@@ -186,8 +202,8 @@ export default class LocalBibleRefSettingTab extends PluginSettingTab {
 			);
 
 		const quoteRefLinkSetting = new Setting(containerEl)
-			.setName('Link to passage')
-			.setDesc('Whether the reference should link to the passage in the Bible.')
+			.setName(quoteFormat.controls.linkToPassage.name)
+			.setDesc(quoteFormat.controls.linkToPassage.description)
 			.addToggle((toggle) =>
 				toggle
 					.setValue(this.plugin.settings.quote.linkToPassage)
@@ -206,13 +222,13 @@ export default class LocalBibleRefSettingTab extends PluginSettingTab {
 		}
 
 		new Setting(containerEl)
-			.setName('Callout Format Settings')
-			.setDesc('Settings for the callout passage format.')
+			.setName(calloutFormat.name)
+			.setDesc(calloutFormat.description)
 			.setHeading();
 
 		new Setting(containerEl)
-			.setName('Callout type')
-			.setDesc('The type of callout to use for passages.')
+			.setName(calloutFormat.controls.calloutType.name)
+			.setDesc(calloutFormat.controls.calloutType.description)
 			.addDropdown((dropdown) =>
 				dropdown
 					.addOptions({
@@ -238,8 +254,8 @@ export default class LocalBibleRefSettingTab extends PluginSettingTab {
 			);
 
 		new Setting(containerEl)
-			.setName('Link to passage')
-			.setDesc('Whether the reference should link to the passage in the Bible.')
+			.setName(calloutFormat.controls.linkToPassage.name)
+			.setDesc(calloutFormat.controls.linkToPassage.description)
 			.addToggle((toggle) =>
 				toggle
 					.setValue(this.plugin.settings.callout.linkToPassage)
