@@ -1,7 +1,7 @@
 import { BOOKS } from './books';
 import { SETTINGS } from './settings';
 
-export const EN = {
+export const DE = {
 	BOOKS,
 	SETTINGS,
 };

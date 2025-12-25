@@ -1,6 +1,8 @@
-import { Book, BOOKS_EN } from "./books/books.en";
+import { Book, BOOKS_EN } from './books/books.en';
 
-export default class PassageReference implements ChapterReference, PassageOptions {
+export default class PassageReference
+	implements ChapterReference, PassageOptions
+{
 	startChapter: number;
 	startVerse: number;
 	endChapter: number;
@@ -51,15 +53,16 @@ export default class PassageReference implements ChapterReference, PassageOption
 
 	/** Builds the passage matching regular expression. */
 	static get regExp(): RegExp {
-		let regExpString = "^\\-\\- ?(";
+		let regExpString = '^\\-\\- ?(';
 		regExpString += BOOKS_EN.map(
-			(b) => `${b.name}|${b.aliases.join("|")}`
-		).join("|");
-		regExpString += ") ?(\\d{1,3}(?::\\d{1,3})?" +
-			"(?: ?\\- ?\\d{1,3}(?::\\d{1,3})?)?)" +
-			"((?: ?\\+[a-z]+(?::[a-z]+)?){0,2})$";
+			(b) => `${b.name}|${b.aliases.join('|')}`
+		).join('|');
+		regExpString +=
+			') ?(\\d{1,3}(?::\\d{1,3})?' +
+			'(?: ?\\- ?\\d{1,3}(?::\\d{1,3})?)?)' +
+			'((?: ?\\+[a-z]+(?::[a-z]+)?){0,2})$';
 
-		return new RegExp(regExpString, "i");
+		return new RegExp(regExpString, 'i');
 	}
 
 	/** Stringifies the passage reference back into text. */
@@ -67,9 +70,7 @@ export default class PassageReference implements ChapterReference, PassageOption
 		// multi-chapter ref
 		if (this.startVerse === 1 && this.endVerse === -1) {
 			if (this.startChapter === this.endChapter)
-				return (
-					this.book.name + ` ${this.startChapter} - ${this.version}`
-				);
+				return this.book.name + ` ${this.startChapter} - ${this.version}`;
 			return (
 				`${this.book.name} ${this.startChapter}-` +
 				`${this.endChapter} - ${this.version}`
@@ -116,7 +117,9 @@ export default class PassageReference implements ChapterReference, PassageOption
 	 * Parses a multi-chapter-and-verse reference from the given text.
 	 * Reference format: `startChapter:startVerse[ ]-[ ]endChapter:endVerse`.
 	 */
-	private static parseMultiChapterVerseRef(text: string): ChapterReference | null {
+	private static parseMultiChapterVerseRef(
+		text: string
+	): ChapterReference | null {
 		const regex = /^(\d{1,3}):(\d{1,3}) ?- ?(\d{1,3}):(\d{1,3})$/i;
 		const match = text.match(regex);
 		if (!match) return null;
@@ -145,7 +148,7 @@ export default class PassageReference implements ChapterReference, PassageOption
 			endVerse: match[3] ? +match[3] : +match[2],
 		};
 	}
-	
+
 	/** Retrieves a book based on its alias. */
 	private static getBook(alias: string): Book | undefined {
 		alias = alias.toLowerCase();
@@ -164,7 +167,7 @@ export default class PassageReference implements ChapterReference, PassageOption
 	): PassageOptions {
 		const optionArgs = text
 			.toLowerCase()
-			.split("+")
+			.split('+')
 			.filter(Boolean)
 			.map((x) => x.trim());
 
@@ -177,20 +180,20 @@ export default class PassageReference implements ChapterReference, PassageOption
 		// example) - anything else is treated as a Bible version code
 		for (const option of optionArgs) {
 			switch (option) {
-				case "m":
-				case "manuscript":
+				case 'm':
+				case 'manuscript':
 					options.format = PassageFormat.Manuscript;
 					break;
-				case "p":
-				case "paragraph":
+				case 'p':
+				case 'paragraph':
 					options.format = PassageFormat.Paragraph;
 					break;
-				case "q":
-				case "quote":
+				case 'q':
+				case 'quote':
 					options.format = PassageFormat.Quote;
 					break;
-				case "c":
-				case "callout":
+				case 'c':
+				case 'callout':
 					options.format = PassageFormat.Callout;
 					break;
 				default:
@@ -204,10 +207,10 @@ export default class PassageReference implements ChapterReference, PassageOption
 }
 
 export enum PassageFormat {
-	Manuscript = "manuscript",
-	Paragraph = "paragraph",
-	Quote = "quote",
-	Callout = "callout",
+	Manuscript = 'manuscript',
+	Paragraph = 'paragraph',
+	Quote = 'quote',
+	Callout = 'callout',
 }
 
 interface ChapterReference {

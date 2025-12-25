@@ -9,10 +9,10 @@ import {
 	Notice,
 	TFile,
 	TFolder,
-} from "obsidian";
-import { BibleFormat } from "./local-bible-ref-setting-tab";
-import PassageReference, { PassageFormat } from "./passage-reference";
-import LocalBibleRefSettings, { QuoteReferencePosition } from "./settings";
+} from 'obsidian';
+import { BibleFormat } from './local-bible-ref-setting-tab';
+import PassageReference, { PassageFormat } from './passage-reference';
+import LocalBibleRefSettings, { QuoteReferencePosition } from './settings';
 
 export default class PassageSuggest extends EditorSuggest<PassageSuggestion> {
 	private settings: LocalBibleRefSettings;
@@ -30,14 +30,15 @@ export default class PassageSuggest extends EditorSuggest<PassageSuggestion> {
 	): EditorSuggestTriggerInfo | null {
 		// line must start with '--'
 		const line = editor.getLine(cursor.line);
-		if (!line.startsWith("--")) return null;
+		if (!line.startsWith('--')) return null;
 
 		// if no settings, alert user
 		if (!this.settings.biblesPath) {
 			if (!this.noSettingsNotice?.messageEl.isShown()) {
-				const noticeText = "Local Bible Ref settings are not " +
-					"configured. Please set the bibles path before " +
-					"attempting to reference passages.";
+				const noticeText =
+					'Local Bible Ref settings are not ' +
+					'configured. Please set the bibles path before ' +
+					'attempting to reference passages.';
 				this.noSettingsNotice = new Notice(noticeText);
 			}
 
@@ -68,12 +69,14 @@ export default class PassageSuggest extends EditorSuggest<PassageSuggestion> {
 		let version = this.settings.defaultVersionShorthand;
 		if (!version) {
 			const folder = this.app.vault.getFolderByPath(this.settings.biblesPath);
-			version = folder?.children?.filter(c => c instanceof TFolder)?.first()?.name ?? '';
+			version =
+				folder?.children?.filter((c) => c instanceof TFolder)?.first()?.name ??
+				'';
 		}
 		const passageRef = PassageReference.parse(
 			context.query,
 			version,
-			this.settings.defaultPassageFormat,
+			this.settings.defaultPassageFormat
 		);
 		if (!passageRef) return [];
 
@@ -82,19 +85,13 @@ export default class PassageSuggest extends EditorSuggest<PassageSuggestion> {
 		if (!texts) return [];
 
 		// split first chapter by start verse
-		const textFromVerse = this.getTextFromStartVerse(
-			texts[0],
-			passageRef
-		);
+		const textFromVerse = this.getTextFromStartVerse(texts[0], passageRef);
 		if (!textFromVerse) return [];
 		texts[0] = textFromVerse;
 
 		// split last chapter by end verse
 		const lastIndex = texts.length - 1;
-		const textToVerse = this.getTextToEndVerse(
-			texts[lastIndex],
-			passageRef
-		);
+		const textToVerse = this.getTextToEndVerse(texts[lastIndex], passageRef);
 		if (!textToVerse) return [];
 		texts[lastIndex] = textToVerse;
 
@@ -131,9 +128,9 @@ export default class PassageSuggest extends EditorSuggest<PassageSuggestion> {
 	private async getChapterTexts(
 		ref: PassageReference
 	): Promise<string[] | null> {
-		let basePath = "";
+		let basePath = '';
 		for (const alias of [ref.book.name, ...ref.book.aliases]) {
-			basePath = [this.settings.biblesPath, ref.version, alias].join("/");
+			basePath = [this.settings.biblesPath, ref.version, alias].join('/');
 			basePath = normalizePath(basePath);
 
 			// if the book exists at this alias, use the alias instead
@@ -174,7 +171,7 @@ export default class PassageSuggest extends EditorSuggest<PassageSuggestion> {
 			const verseNum = `<sup>${ref.startVerse}</sup>`;
 			pattern = quoteOrList + chapterNum + verseNum;
 		}
-		
+
 		const regExp = new RegExp(pattern);
 		const match = text.match(regExp);
 		if (!match) return null;
@@ -223,13 +220,13 @@ export default class PassageSuggest extends EditorSuggest<PassageSuggestion> {
 			text = this.removeVerseSpacing(text);
 		}
 
-		const chapterMd = multipleChapters ? `**${chapterNumber}**` : "";
-		if (text.startsWith("> ")) {
+		const chapterMd = multipleChapters ? `**${chapterNumber}**` : '';
+		if (text.startsWith('> ')) {
 			const quoteMd = text.match(/^(?:> )+/)![0];
 			return text.replace(quoteMd, `${quoteMd}${chapterMd} `);
 		}
 
-		if (text.startsWith("- ")) {
+		if (text.startsWith('- ')) {
 			const listMd = text.match(/^(?:- )+/)![0];
 			return text.replace(listMd, `${listMd}${chapterMd} `);
 		}
@@ -241,28 +238,28 @@ export default class PassageSuggest extends EditorSuggest<PassageSuggestion> {
 	private formatBibleLinkerVerses(text: string): string {
 		return text.replace(
 			/#{1,6} [a-zA-Z]*(\d{1,3})[a-zA-Z]*\n(\w+)/g,
-			"<sup>$1</sup> $2",
+			'<sup>$1</sup> $2'
 		);
 	}
 
 	/** Removes chapter numbers from the given text. */
 	private removeChapterNumbers(text: string): string {
-		return text.replace(/\*\*\d{1,3}\*\* /g, "");
+		return text.replace(/\*\*\d{1,3}\*\* /g, '');
 	}
 
 	/** Removes headings from the given text. */
 	private removeHeadings(text: string): string {
-		return text.replace(/^#.*[\n\r\f]*/gm, "");
+		return text.replace(/^#.*[\n\r\f]*/gm, '');
 	}
 
 	/** Removes footnote refs from the given text. */
 	private removeFootnoteRefs(text: string): string {
-		return text.replace(/ \[\^\w{1,9}\]/g, "");
+		return text.replace(/ \[\^\w{1,9}\]/g, '');
 	}
 
 	/** Removes the beginning-of-file content from the given text. */
 	private removeBOF(text: string): string {
-		if (!text.startsWith("---")) return text;
+		if (!text.startsWith('---')) return text;
 		// split at YAML front matter
 		const split = text.split(/^---$/m);
 		return split[2].trim();
@@ -279,76 +276,78 @@ export default class PassageSuggest extends EditorSuggest<PassageSuggestion> {
 
 	/** Removes extra spacing between verses in Bible Linker formatting. */
 	private removeVerseSpacing(text: string): string {
-		return text.replace(/\n{2,}/g, " ");
+		return text.replace(/\n{2,}/g, ' ');
 	}
 
 	/** Generates an excerpt for the suggestion. */
 	private generateExcerpt(text: string): string {
 		text = text.split(/<\/sup>/, 2)[1];
-		text = text.replace(/(?:<sup>\d+<\/sup>|> |- )/g, "");
+		text = text.replace(/(?:<sup>\d+<\/sup>|> |- )/g, '');
 		text = text.replace(
 			/<span style='font-variant: small-caps;'>Lord<\/span>/g,
-			"Lord"
+			'Lord'
 		);
-		text = text.replace(/\n/g, " ");
-		text = text.replace(/ {2,}/g, " ");
-		return text.slice(0, 45) + "...";
+		text = text.replace(/\n/g, ' ');
+		text = text.replace(/ {2,}/g, ' ');
+		return text.slice(0, 45) + '...';
 	}
 
 	/** Formats the final text for suggestion. */
 	private formatTexts(
-			texts: string[],
-			passageRef: PassageReference,
-			context: EditorSuggestContext
+		texts: string[],
+		passageRef: PassageReference,
+		context: EditorSuggestContext
 	): string {
-		let formatted = "";
+		let formatted = '';
 		switch (passageRef.format) {
 			case PassageFormat.Manuscript:
-				formatted = texts.join(" ").trim();
-				formatted = formatted.replace(/\n+/g, " ");
-				formatted = formatted.replace(/\*\*\d{1,3}\*\*/g, "");
-				formatted = formatted.replace(/<sup>\d{1,3}<\/sup> /g, "");
-				formatted = formatted.replace(/(?:^[>-] | [>-] )/g, " ");
-				formatted = formatted.trim() + "\n\n";
+				formatted = texts.join(' ').trim();
+				formatted = formatted.replace(/\n+/g, ' ');
+				formatted = formatted.replace(/\*\*\d{1,3}\*\*/g, '');
+				formatted = formatted.replace(/<sup>\d{1,3}<\/sup> /g, '');
+				formatted = formatted.replace(/(?:^[>-] | [>-] )/g, ' ');
+				formatted = formatted.trim() + '\n\n';
 				break;
 			case PassageFormat.Paragraph:
-				formatted = texts.join("\n\n").trim();
-				formatted += "\n\n";
+				formatted = texts.join('\n\n').trim();
+				formatted += '\n\n';
 				break;
 			case PassageFormat.Quote: {
-				const {
-					includeReference,
-					referencePosition,
-					linkToPassage
-				} = this.settings.quote;
+				const { includeReference, referencePosition, linkToPassage } =
+					this.settings.quote;
 
 				let stringRef = '';
 				if (includeReference) {
-					if (linkToPassage) stringRef = this.generatePassageLink(passageRef, context);
+					if (linkToPassage)
+						stringRef = this.generatePassageLink(passageRef, context);
 					else stringRef = passageRef.stringify();
-					if (referencePosition === QuoteReferencePosition.Beginning) stringRef += "\n";
+					if (referencePosition === QuoteReferencePosition.Beginning)
+						stringRef += '\n';
 					else stringRef = `\n> ${stringRef}`;
 				}
 
-				formatted = "> ";
-				if (referencePosition === QuoteReferencePosition.Beginning) formatted += stringRef;
-				formatted += texts.join("\n\n").trim();
-				formatted = formatted.replace(/\n/gm, "\n> ");
-				if (referencePosition === QuoteReferencePosition.End) formatted += stringRef;
-				formatted += "\n\n";
+				formatted = '> ';
+				if (referencePosition === QuoteReferencePosition.Beginning)
+					formatted += stringRef;
+				formatted += texts.join('\n\n').trim();
+				formatted = formatted.replace(/\n/gm, '\n> ');
+				if (referencePosition === QuoteReferencePosition.End)
+					formatted += stringRef;
+				formatted += '\n\n';
 				break;
 			}
 			case PassageFormat.Callout: {
 				const { type, linkToPassage } = this.settings.callout;
 
 				let stringRef = '';
-				if (linkToPassage) stringRef = this.generatePassageLink(passageRef, context);
+				if (linkToPassage)
+					stringRef = this.generatePassageLink(passageRef, context);
 				else stringRef = passageRef.stringify();
 
 				formatted = `> [!${type}] ${stringRef}\n`;
-				formatted += texts.join("\n\n").trim();
-				formatted = formatted.replace(/\n/gm, "\n> ");
-				formatted += "\n\n";
+				formatted += texts.join('\n\n').trim();
+				formatted = formatted.replace(/\n/gm, '\n> ');
+				formatted += '\n\n';
 				break;
 			}
 		}
@@ -356,7 +355,7 @@ export default class PassageSuggest extends EditorSuggest<PassageSuggestion> {
 		return formatted;
 	}
 
-    /** Generates a link to the passage within the vault. */
+	/** Generates a link to the passage within the vault. */
 	private generatePassageLink(
 		ref: PassageReference,
 		context: EditorSuggestContext
@@ -372,7 +371,7 @@ export default class PassageSuggest extends EditorSuggest<PassageSuggestion> {
 			this.settings.bibleFormat === BibleFormat.BibleLinker
 				? `#${startVerse}`
 				: undefined,
-			ref.stringify(),
+			ref.stringify()
 		);
 	}
 }

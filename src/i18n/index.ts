@@ -1,5 +1,7 @@
-import { EN } from "./en";
+import { DE } from './de';
+import { EN } from './en';
 
 export const I18N = {
-  EN,
-}
+	EN,
+	DE,
+};
