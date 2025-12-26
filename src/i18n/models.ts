@@ -1,22 +1,37 @@
+import { PassageFormat } from 'src/passage-reference';
+import { QuoteReferencePosition } from 'src/settings';
+
 export interface Book {
 	id: string;
 	name: string;
 	aliases: string[];
 }
 
+export interface CommonLabels {
+	folderDoesNotExist: string;
+	settingsNotConfigured: string;
+}
+
 export interface SettingsLabels {
 	required: {
 		name: string;
 		controls: {
-			biblesPath: ControlWithPlaceholder;
+			biblesPath: TextControl;
 		};
 	};
 
 	optional: {
 		name: string;
 		controls: {
-			defaultVersion: ControlWithPlaceholder;
-			defaultPassageFormat: Control;
+			defaultVersion: TextControl;
+			defaultPassageFormat: Control & {
+				options: {
+					[PassageFormat.Manuscript]: string;
+					[PassageFormat.Paragraph]: string;
+					[PassageFormat.Quote]: string;
+					[PassageFormat.Callout]: string;
+				};
+			};
 			bibleFormat: Control;
 		};
 	};
@@ -26,7 +41,12 @@ export interface SettingsLabels {
 		description: string;
 		controls: {
 			includeReference: Control;
-			referencePosition: Control;
+			referencePosition: Control & {
+				options: {
+					[QuoteReferencePosition.Beginning]: string;
+					[QuoteReferencePosition.End]: string;
+				};
+			};
 			linkToPassage: Control;
 		};
 	};
@@ -46,6 +66,6 @@ interface Control {
 	description: string;
 }
 
-interface ControlWithPlaceholder extends Control {
+interface TextControl extends Control {
 	placeholder: string;
 }

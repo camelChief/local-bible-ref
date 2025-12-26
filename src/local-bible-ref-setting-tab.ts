@@ -16,11 +16,14 @@ import { SettingsLabels } from './i18n/models';
 import { I18N } from './i18n';
 
 // STILL TODO:
-// - Need to add a 'common' labels internationalization file for non-settings labels. (e.g. notices)
 // - Need to sort out books in PassageReference to use I18N.
+// - Need to sort out smallcaps 'Lord' in German.
 
 export default class LocalBibleRefSettingTab extends PluginSettingTab {
+	private readonly hiddenClass = 'local-bible-ref-hidden';
+
 	private plugin: LocalBibleRefPlugin;
+	private folderDoesNotExistText = '';
 	private settingsLabels: SettingsLabels;
 
 	constructor(app: App, plugin: LocalBibleRefPlugin) {
@@ -29,10 +32,12 @@ export default class LocalBibleRefSettingTab extends PluginSettingTab {
 
 		switch (getLanguage()) {
 			case 'de':
+				this.folderDoesNotExistText = I18N.DE.COMMON.folderDoesNotExist;
 				this.settingsLabels = I18N.DE.SETTINGS;
 				break;
 			case 'en':
 			default:
+				this.folderDoesNotExistText = I18N.EN.COMMON.folderDoesNotExist;
 				this.settingsLabels = I18N.EN.SETTINGS;
 				break;
 		}
@@ -57,13 +62,9 @@ export default class LocalBibleRefSettingTab extends PluginSettingTab {
 					.onChange(async (value) => {
 						// toggle visibility of default version setting
 						if (value) {
-							defaultVersionSetting.settingEl.removeClass(
-								'local-bible-ref-hidden'
-							);
+							defaultVersionSetting.settingEl.removeClass(this.hiddenClass);
 						} else {
-							defaultVersionSetting.settingEl.addClass(
-								'local-bible-ref-hidden'
-							);
+							defaultVersionSetting.settingEl.addClass(this.hiddenClass);
 							(
 								defaultVersionSetting.components[0] as TextComponent
 							).inputEl.value = '';
@@ -78,7 +79,8 @@ export default class LocalBibleRefSettingTab extends PluginSettingTab {
 						biblesPathTimeout = window.setTimeout(async () => {
 							if (!path) return;
 							const exists = this.app.vault.getFolderByPath(path);
-							if (!exists) new Notice(`Folder doesn't exist at path: ${path}.`);
+							if (!exists)
+								new Notice(`${this.folderDoesNotExistText} ${path}.`);
 						}, 1000);
 					});
 
@@ -105,7 +107,8 @@ export default class LocalBibleRefSettingTab extends PluginSettingTab {
 							const exists = this.app.vault.getFolderByPath(
 								normalizePath(path)
 							);
-							if (!exists) new Notice(`Folder doesn't exist at path: ${path}.`);
+							if (!exists)
+								new Notice(`${this.folderDoesNotExistText} ${path}.`);
 						}, 1000);
 					});
 
@@ -113,9 +116,9 @@ export default class LocalBibleRefSettingTab extends PluginSettingTab {
 			});
 
 		if (this.plugin.settings.biblesPath) {
-			defaultVersionSetting.settingEl.removeClass('local-bible-ref-hidden');
+			defaultVersionSetting.settingEl.removeClass(this.hiddenClass);
 		} else {
-			defaultVersionSetting.settingEl.addClass('local-bible-ref-hidden');
+			defaultVersionSetting.settingEl.addClass(this.hiddenClass);
 		}
 
 		new Setting(containerEl)
@@ -123,12 +126,7 @@ export default class LocalBibleRefSettingTab extends PluginSettingTab {
 			.setDesc(optional.controls.defaultPassageFormat.description)
 			.addDropdown((dropdown) =>
 				dropdown
-					.addOptions({
-						manuscript: 'Manuscript',
-						paragraph: 'Paragraph',
-						quote: 'Quote',
-						callout: 'Callout',
-					})
+					.addOptions(optional.controls.defaultPassageFormat.options)
 					.setValue(this.plugin.settings.defaultPassageFormat)
 					.onChange(async (value) => {
 						this.plugin.settings.defaultPassageFormat = value as PassageFormat;
@@ -166,17 +164,11 @@ export default class LocalBibleRefSettingTab extends PluginSettingTab {
 					.onChange(async (value) => {
 						// toggle visibility of other paragraph reference settings
 						if (value) {
-							quoteRefPositionSetting.settingEl.removeClass(
-								'local-bible-ref-hidden'
-							);
-							quoteRefLinkSetting.settingEl.removeClass(
-								'local-bible-ref-hidden'
-							);
+							quoteRefPositionSetting.settingEl.removeClass(this.hiddenClass);
+							quoteRefLinkSetting.settingEl.removeClass(this.hiddenClass);
 						} else {
-							quoteRefPositionSetting.settingEl.addClass(
-								'local-bible-ref-hidden'
-							);
-							quoteRefLinkSetting.settingEl.addClass('local-bible-ref-hidden');
+							quoteRefPositionSetting.settingEl.addClass(this.hiddenClass);
+							quoteRefLinkSetting.settingEl.addClass(this.hiddenClass);
 						}
 
 						this.plugin.settings.quote.includeReference = value;
@@ -189,10 +181,7 @@ export default class LocalBibleRefSettingTab extends PluginSettingTab {
 			.setDesc(quoteFormat.controls.referencePosition.description)
 			.addDropdown((dropdown) =>
 				dropdown
-					.addOptions({
-						beginning: 'Beginning',
-						end: 'End',
-					})
+					.addOptions(quoteFormat.controls.referencePosition.options)
 					.setValue(this.plugin.settings.quote.referencePosition)
 					.onChange(async (value) => {
 						this.plugin.settings.quote.referencePosition =
@@ -214,11 +203,11 @@ export default class LocalBibleRefSettingTab extends PluginSettingTab {
 			);
 
 		if (this.plugin.settings.quote.includeReference) {
-			quoteRefPositionSetting.settingEl.removeClass('local-bible-ref-hidden');
-			quoteRefLinkSetting.settingEl.removeClass('local-bible-ref-hidden');
+			quoteRefPositionSetting.settingEl.removeClass(this.hiddenClass);
+			quoteRefLinkSetting.settingEl.removeClass(this.hiddenClass);
 		} else {
-			quoteRefPositionSetting.settingEl.addClass('local-bible-ref-hidden');
-			quoteRefLinkSetting.settingEl.addClass('local-bible-ref-hidden');
+			quoteRefPositionSetting.settingEl.addClass(this.hiddenClass);
+			quoteRefLinkSetting.settingEl.addClass(this.hiddenClass);
 		}
 
 		new Setting(containerEl)

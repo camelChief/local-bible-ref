@@ -5,6 +5,7 @@ import {
 	EditorSuggest,
 	EditorSuggestContext,
 	EditorSuggestTriggerInfo,
+	getLanguage,
 	normalizePath,
 	Notice,
 	TFile,
@@ -13,14 +14,26 @@ import {
 import { BibleFormat } from './local-bible-ref-setting-tab';
 import PassageReference, { PassageFormat } from './passage-reference';
 import LocalBibleRefSettings, { QuoteReferencePosition } from './settings';
+import { I18N } from './i18n';
 
 export default class PassageSuggest extends EditorSuggest<PassageSuggestion> {
 	private settings: LocalBibleRefSettings;
+	private settingsNotConfiguredText = '';
 	private noSettingsNotice: Notice;
 
 	constructor(app: App, settings: LocalBibleRefSettings) {
 		super(app);
 		this.settings = settings;
+
+		switch (getLanguage()) {
+			case 'de':
+				this.settingsNotConfiguredText = I18N.DE.COMMON.settingsNotConfigured;
+				break;
+			case 'en':
+			default:
+				this.settingsNotConfiguredText = I18N.EN.COMMON.settingsNotConfigured;
+				break;
+		}
 	}
 
 	onTrigger(
@@ -35,10 +48,7 @@ export default class PassageSuggest extends EditorSuggest<PassageSuggestion> {
 		// if no settings, alert user
 		if (!this.settings.biblesPath) {
 			if (!this.noSettingsNotice?.messageEl.isShown()) {
-				const noticeText =
-					'Local Bible Ref settings are not ' +
-					'configured. Please set the bibles path before ' +
-					'attempting to reference passages.';
+				const noticeText = this.settingsNotConfiguredText;
 				this.noSettingsNotice = new Notice(noticeText);
 			}
 

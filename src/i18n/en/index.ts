@@ -1,7 +1,9 @@
 import { BOOKS } from './books';
-import { SETTINGS } from './settings';
+import { COMMON_LABELS } from './common-labels';
+import { SETTINGS_LABELS } from './settings-labels';
 
 export const EN = {
 	BOOKS,
-	SETTINGS,
+	COMMON: COMMON_LABELS,
+	SETTINGS: SETTINGS_LABELS,
 };

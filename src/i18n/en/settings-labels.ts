@@ -1,11 +1,13 @@
+import { PassageFormat } from 'src/passage-reference';
 import { SettingsLabels } from '../models';
+import { QuoteReferencePosition } from 'src/settings';
 
-export const SETTINGS: SettingsLabels = {
+export const SETTINGS_LABELS: SettingsLabels = {
 	required: {
 		name: 'Required Settings',
 		controls: {
 			biblesPath: {
-				name: 'Bible pathen',
+				name: 'Bibles path',
 				description: 'The path to the folder containing your bibles.',
 				placeholder: 'e.g. Data/Bibles',
 			},
@@ -24,6 +26,12 @@ export const SETTINGS: SettingsLabels = {
 			defaultPassageFormat: {
 				name: 'Default passage format',
 				description: 'The markdown format to use for passages by default.',
+				options: {
+					[PassageFormat.Manuscript]: 'Manuscript',
+					[PassageFormat.Paragraph]: 'Paragraph',
+					[PassageFormat.Quote]: 'Quote',
+					[PassageFormat.Callout]: 'Callout',
+				},
 			},
 			bibleFormat: {
 				name: 'Bible format',
@@ -45,6 +53,10 @@ export const SETTINGS: SettingsLabels = {
 				name: 'Reference position',
 				description:
 					'The position of the reference in relation to the quoted text.',
+				options: {
+					[QuoteReferencePosition.Beginning]: 'Beginning',
+					[QuoteReferencePosition.End]: 'End',
+				},
 			},
 			linkToPassage: {
 				name: 'Link to passage',
