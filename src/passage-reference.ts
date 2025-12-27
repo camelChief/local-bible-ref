@@ -1,3 +1,4 @@
+import { getLanguage } from 'obsidian';
 import { I18N } from './i18n';
 import { Book } from './i18n/models';
 
@@ -54,10 +55,11 @@ export default class PassageReference
 
 	/** Builds the passage matching regular expression. */
 	static get regExp(): RegExp {
+		const books = getBooksByLanguage();
 		let regExpString = '^\\-\\- ?(';
-		regExpString += I18N.EN.BOOKS.map(
-			(b) => `${b.name}|${b.aliases.join('|')}`
-		).join('|');
+		regExpString += books
+			.map((b) => `${b.name}|${b.aliases.join('|')}`)
+			.join('|');
 		regExpString +=
 			') ?(\\d{1,3}(?::\\d{1,3})?' +
 			'(?: ?\\- ?\\d{1,3}(?::\\d{1,3})?)?)' +
@@ -152,8 +154,9 @@ export default class PassageReference
 
 	/** Retrieves a book based on its alias. */
 	private static getBook(alias: string): Book | undefined {
+		const books = getBooksByLanguage();
 		alias = alias.toLowerCase();
-		return I18N.EN.BOOKS.find((book) => {
+		return books.find((book) => {
 			const aliases = book.aliases.map((a) => a.toLowerCase());
 			if (book.name.toLowerCase() === alias) return book;
 			if (aliases.includes(alias)) return book;
@@ -204,6 +207,16 @@ export default class PassageReference
 		}
 
 		return options;
+	}
+}
+
+function getBooksByLanguage(): Book[] {
+	switch (getLanguage()) {
+		case 'de':
+			return I18N.DE.BOOKS;
+		case 'en':
+		default:
+			return I18N.EN.BOOKS;
 	}
 }
 

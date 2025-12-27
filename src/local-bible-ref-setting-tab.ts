@@ -15,10 +15,6 @@ import VersionSuggest from './version-suggest';
 import { SettingsLabels } from './i18n/models';
 import { I18N } from './i18n';
 
-// STILL TODO:
-// - Need to sort out books in PassageReference to use I18N.
-// - Need to sort out smallcaps 'Lord' in German.
-
 export default class LocalBibleRefSettingTab extends PluginSettingTab {
 	private readonly hiddenClass = 'local-bible-ref-hidden';
 

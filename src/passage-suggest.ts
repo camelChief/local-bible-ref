@@ -17,8 +17,9 @@ import LocalBibleRefSettings, { QuoteReferencePosition } from './settings';
 import { I18N } from './i18n';
 
 export default class PassageSuggest extends EditorSuggest<PassageSuggestion> {
-	private settings: LocalBibleRefSettings;
-	private settingsNotConfiguredText = '';
+	private readonly settings: LocalBibleRefSettings;
+	private readonly settingsNotConfiguredText: string;
+
 	private noSettingsNotice: Notice;
 
 	constructor(app: App, settings: LocalBibleRefSettings) {
@@ -55,8 +56,8 @@ export default class PassageSuggest extends EditorSuggest<PassageSuggestion> {
 			return null;
 		}
 
-		// min ref length is 6 ('--gen1')
-		if (cursor.ch < 6) return null;
+		// min ref length is 5 ('--ex1')
+		if (cursor.ch < 5) return null;
 
 		// must be a passage ref
 		const isPassage = PassageReference.regExp.test(line);
@@ -292,10 +293,11 @@ export default class PassageSuggest extends EditorSuggest<PassageSuggestion> {
 	/** Generates an excerpt for the suggestion. */
 	private generateExcerpt(text: string): string {
 		text = text.split(/<\/sup>/, 2)[1];
-		text = text.replace(/(?:<sup>\d+<\/sup>|> |- )/g, '');
+		text = text.replace(/<sup>\d+<\/sup>/g, '');
+		text = text.replace(/^(?:> |- )/gm, '');
 		text = text.replace(
-			/<span style='font-variant: small-caps;'>Lord<\/span>/g,
-			'Lord'
+			/<span(?:\s+\w+=['"][^'"]+['"])*>([^<]+)<\/span>/g,
+			'$1'
 		);
 		text = text.replace(/\n/g, ' ');
 		text = text.replace(/ {2,}/g, ' ');
