@@ -8,21 +8,21 @@ Quickly and easily reference Bible passages stored locally in your vault.
 
 ### Inspiration
 
-This plugin takes heavy inspiration from the [Bible Reference](https://github.com/tim-hub/obsidian-bible-reference) and [Bible Linker](https://github.com/kuchejak/obsidian-bible-linker-plugin) plugins - please check them out! I've been using the *Bible Reference* plugin for a while (which has been great) and I love the simplicity of referencing passages using the `--` prefix. I also loved the idea of storing a Bible locally because then I can reference Bible passages even when I'm offline, as well as use my vault Bible for reading. Unfortunately, the markdown format of the *Bible Linker* local Bible is not great for reading, and I prefer the simplicity of using the `--` prefix to fetch Bible passages. There's also some referencing limitations in the *Bible Reference* plugin and occasionally some odd additions to passages returned from the [Boll's Life](https://bolls.life/) API. So, this is an amalgamation of those two plugins. 
+This plugin takes heavy inspiration from the [Bible Reference](https://github.com/tim-hub/obsidian-bible-reference) and [Bible Linker](https://github.com/kuchejak/obsidian-bible-linker-plugin) plugins - please check them out! I've been using the _Bible Reference_ plugin for a while (which has been great) and I love the simplicity of referencing passages using the `--` prefix. I also loved the idea of storing a Bible locally because then I can reference Bible passages even when I'm offline, as well as use my vault Bible for reading. Unfortunately, the markdown format of the _Bible Linker_ local Bible is not great for reading, and I prefer the simplicity of using the `--` prefix to fetch Bible passages. There's also some referencing limitations in the _Bible Reference_ plugin and occasionally some odd additions to passages returned from the [Boll's Life](https://bolls.life/) API. So, this is an amalgamation of those two plugins.
 
 ### Getting Started
 
 To start with, you will need to format a Bible for your own vault.
 
-If you would like to use your vault Bible for reading, I would encourage you to format it in the original *Local Bible Ref* format. Some instructions on this can be found [below](#bible-markdown-format). I've also already formatted the Public Domain World English Bible so you can [download](https://github.com/camelChief/markdown-webp) that and just get started. If you don't want to go to all that hassle, you can use your existing *Bible Linker* Bible with this plugin! In order to do that, simply select "Bible Linker" as your Bible format in the *Local Bible Ref* settings.
+If you would like to use your vault Bible for reading, I would encourage you to format it in the original _Local Bible Ref_ format. Some instructions on this can be found [below](#bible-markdown-format). I've also already formatted the Public Domain World English Bible so you can [download](https://github.com/camelChief/markdown-webp) that and just get started. If you don't want to go to all that hassle, you can use your existing _Bible Linker_ Bible with this plugin! In order to do that, simply select "Bible Linker" as your Bible format in the _Local Bible Ref_ settings.
 
-Once you've done that, open up the *Local Bible Ref* settings and fill in at least the *Bibles path* field. Then, to use the plugin, simply open a new note and use the `--` reference prefix to grab a passage of scripture. There are also additional options (similar to terminal command options) you can provide to the reference to indicate which version to use and what markdown format to display the passage in. More information can be found [below](#usage).
+Once you've done that, open up the _Local Bible Ref_ settings and fill in at least the _Bibles path_ field. Then, to use the plugin, simply open a new note and use the `--` reference prefix to grab a passage of scripture. There are also additional options (similar to terminal command options) you can provide to the reference to indicate which version to use and what markdown format to display the passage in. More information can be found [below](#usage).
 
 ## Usage
 
 ### References
 
-In order to fetch a Bible passage, simply type in a Bible reference prefixed with `--`: `--John 1:1`. *Local Bible Ref* currently supports Bible references in the form:
+In order to fetch a Bible passage, simply type in a Bible reference prefixed with `--`: `--John 1:1`. _Local Bible Ref_ currently supports Bible references in the form:
 
 - Single verse: `--gen1:1`
 - Multi verse: `--gen1:1-3`
@@ -33,19 +33,19 @@ In order to fetch a Bible passage, simply type in a Bible reference prefixed wit
 The referencing syntax also allows for a lot of flexibility:
 
 - Short and full name references: `--gen1` + `--genesis1`
-- Lowercase, uppercase and mixed-case references: ``--gEnEsis1``
+- Lowercase, uppercase and mixed-case references: `--gEnEsis1`
 - Spacing (not more than a single space): `-- Genesis 1:1 - 2:2`
 
 ### Options
 
-*Local Bible Ref* also allows you to provide a few options to a reference to specify which version you would like to use as well as what markdown format to use. Add an option to a reference by adding a `+` followed by the option (in any order): `--gen1:1-5+esv`
+_Local Bible Ref_ also allows you to provide a few options to a reference to specify which version you would like to use as well as what markdown format to use. Add an option to a reference by adding a `+` followed by the option (in any order): `--gen1:1-5+esv`
 
 You can also pass multiple options by simply chaining them: `-- John 1:1 +quote +esv`
 
 Syntax: `--<reference>[+<option>]...`
 
-| Option                | Usage                                                                                                                                             | Example                     |
-| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------- |
+| Option                | Usage                                                                                                                                             | Example                                                                                            |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
 | `manuscript`, `m`     | Specifies that the passage should be displayed in "manuscript" format (without chapter numbers, verse numbers or other formatting like newlines). | ![localBibleRef3](https://github.com/user-attachments/assets/736e38e3-f05e-41c0-9d0a-d27145e50e30) |
 | `paragraph`, `p`      | Specifies that the passage should be displayed in a standard paragraph.                                                                           | ![localBibleRef4](https://github.com/user-attachments/assets/d62dc0f0-4d4b-4468-b53a-b87a2f3b5384) |
 | `quote`, `q`          | Specifies that the passage should be displayed in [quote](https://help.obsidian.md/Editing+and+formatting/Basic+formatting+syntax#Quotes) format. | ![localBibleRef5](https://github.com/user-attachments/assets/59cd0a61-de28-4c51-ac38-9faf71c2e391) |
@@ -54,7 +54,7 @@ Syntax: `--<reference>[+<option>]...`
 
 ## Bible Markdown Format
 
-The Bible markdown format required for this plugin is slightly more complex than the format used for the *Bible Linker* plugin. I chose this particular format because it makes the Bible much nicer to read if you simply wanted to use your vault Bible for reading (as I do). It looks something like this:
+The Bible markdown format required for this plugin is slightly more complex than the format used for the _Bible Linker_ plugin. I chose this particular format because it makes the Bible much nicer to read if you simply wanted to use your vault Bible for reading (as I do). It looks something like this:
 
 ![localBibleRef2](https://github.com/user-attachments/assets/e5fc4ca1-bc9d-4fbb-b20c-e94c693d0660)
 

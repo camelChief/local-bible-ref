@@ -1,8 +1,13 @@
 import { Plugin } from 'obsidian';
-import LocalBibleRefSettingTab, { BibleFormat } from 'src/local-bible-ref-setting-tab';
+import LocalBibleRefSettingTab, {
+	BibleFormat,
+} from 'src/local-bible-ref-setting-tab';
 import { PassageFormat } from 'src/passage-reference';
 import PassageSuggest from 'src/passage-suggest';
-import LocalBibleRefSettings, { CalloutType, QuoteReferencePosition } from 'src/settings';
+import LocalBibleRefSettings, {
+	CalloutType,
+	QuoteReferencePosition,
+} from 'src/settings';
 
 export default class LocalBibleRefPlugin extends Plugin {
 	settings: LocalBibleRefSettings;
