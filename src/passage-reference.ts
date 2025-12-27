@@ -61,9 +61,7 @@ export default class PassageReference
 			.map((b) => `${b.name}|${b.aliases.join('|')}`)
 			.join('|');
 		regExpString +=
-			') ?(\\d{1,3}(?::\\d{1,3})?' +
-			'(?: ?\\- ?\\d{1,3}(?::\\d{1,3})?)?)' +
-			'((?: ?\\+[a-z]+(?::[a-z]+)?){0,2})$';
+			') ?(\\d{1,3}(?::\\d{1,3})?(?: ?\\- ?\\d{1,3}(?::\\d{1,3})?)?)((?: ?\\+[a-z]+(?::[a-z]+)?){0,2})$';
 
 		return new RegExp(regExpString, 'i');
 	}

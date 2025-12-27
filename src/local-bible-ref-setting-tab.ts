@@ -136,8 +136,8 @@ export default class LocalBibleRefSettingTab extends PluginSettingTab {
 			.addDropdown((dropdown) =>
 				dropdown
 					.addOptions({
-						localBibleRef: 'Local Bible Ref',
-						bibleLinker: 'Bible Linker',
+						[BibleFormat.LocalBibleRef]: 'Local Bible Ref',
+						[BibleFormat.BibleLinker]: 'Bible Linker',
 					})
 					.setValue(this.plugin.settings.bibleFormat)
 					.onChange(async (value) => {
