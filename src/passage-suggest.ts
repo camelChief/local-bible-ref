@@ -30,6 +30,7 @@ export default class PassageSuggest extends EditorSuggest<PassageSuggestion> {
 			case 'de':
 				this.settingsNotConfiguredText = I18N.DE.COMMON.settingsNotConfigured;
 				break;
+			case 'ko':
 			case 'en':
 			default:
 				this.settingsNotConfiguredText = I18N.EN.COMMON.settingsNotConfigured;

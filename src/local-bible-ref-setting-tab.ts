@@ -31,6 +31,7 @@ export default class LocalBibleRefSettingTab extends PluginSettingTab {
 				this.folderDoesNotExistText = I18N.DE.COMMON.folderDoesNotExist;
 				this.settingsLabels = I18N.DE.SETTINGS;
 				break;
+			case 'ko':
 			case 'en':
 			default:
 				this.folderDoesNotExistText = I18N.EN.COMMON.folderDoesNotExist;
