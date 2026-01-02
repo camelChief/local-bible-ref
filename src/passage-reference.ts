@@ -212,6 +212,8 @@ function getBooksByLanguage(): Book[] {
 	switch (getLanguage()) {
 		case 'de':
 			return I18N.DE.BOOKS;
+		case 'ko':
+			return I18N.KO.BOOKS;
 		case 'en':
 		default:
 			return I18N.EN.BOOKS;
