@@ -83,4 +83,11 @@ export const SETTINGS_LABELS: SettingsLabels = {
 			},
 		},
 	},
+
+	issues: {
+		before:
+			'Falls Sie Probleme mit Local Bible Ref feststellen oder Verbesserungsvorschläge haben, ',
+		link: 'eröffne Sie bitte ein Issue auf GitHub',
+		after: '.',
+	},
 };

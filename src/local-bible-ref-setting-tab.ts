@@ -32,6 +32,9 @@ export default class LocalBibleRefSettingTab extends PluginSettingTab {
 				this.settingsLabels = I18N.DE.SETTINGS;
 				break;
 			case 'ko':
+				this.folderDoesNotExistText = I18N.KO.COMMON.folderDoesNotExist;
+				this.settingsLabels = I18N.KO.SETTINGS;
+				break;
 			case 'en':
 			default:
 				this.folderDoesNotExistText = I18N.EN.COMMON.folderDoesNotExist;
@@ -42,7 +45,7 @@ export default class LocalBibleRefSettingTab extends PluginSettingTab {
 
 	display(): void {
 		const { containerEl } = this;
-		const { required, optional, quoteFormat, calloutFormat } =
+		const { required, optional, quoteFormat, calloutFormat, issues } =
 			this.settingsLabels;
 		containerEl.empty();
 
@@ -250,6 +253,16 @@ export default class LocalBibleRefSettingTab extends PluginSettingTab {
 						await this.plugin.saveSettings();
 					})
 			);
+
+		const issuesLink = document.createElement('a');
+		issuesLink.href = 'https://github.com/camelChief/local-bible-ref/issues';
+		issuesLink.textContent = issues.link;
+
+		const issuesNote = new Setting(containerEl)
+			.setDesc(issues.before)
+			.setHeading().descEl;
+		issuesNote.append(issuesLink);
+		issuesNote.append(issues.after ?? '');
 	}
 }
 
