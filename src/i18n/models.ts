@@ -59,6 +59,12 @@ export interface SettingsLabels {
 			linkToPassage: Control;
 		};
 	};
+
+	issues: {
+		before: string;
+		link: string;
+		after?: string;
+	};
 }
 
 interface Control {
