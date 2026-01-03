@@ -1,7 +1,7 @@
 {
 	"id": "local-bible-ref",
 	"name": "Local Bible Ref",
-	"version": "1.2.1",
+	"version": "1.2.2",
 	"minAppVersion": "1.9.14",
 	"description": "Quickly and easily reference Bible passages stored locally in your vault.",
 	"author": "Caleb Campbell",
