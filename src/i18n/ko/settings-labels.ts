@@ -76,6 +76,23 @@ export const SETTINGS_LABELS: SettingsLabels = {
 				name: '통로 바로가기',
 				description: '보관된 성경의 해당 구절에 참조를 연결할지 여부.',
 			},
+			collapsible: {
+				name: '접을 수 있는',
+				description:
+					'해당 구절에 사용할 콜아웃이 접을 수 있는지 여부.',
+			},
+		},
+	},
+
+	suggestionFormat: {
+		name: '제안 형식 설정',
+		description: '콜아웃 제안 문구 형식에 대한 설정입니다.',
+		controls: {
+			full: {
+				name: '전체 제안',
+				description:
+					'본문에 사용할 콜아웃 제안이 완전한지 여부.',
+			},
 		},
 	},
 

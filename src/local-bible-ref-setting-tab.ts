@@ -45,7 +45,7 @@ export default class LocalBibleRefSettingTab extends PluginSettingTab {
 
 	display(): void {
 		const { containerEl } = this;
-		const { required, optional, quoteFormat, calloutFormat, issues } =
+		const { required, optional, quoteFormat, calloutFormat, suggestionFormat, issues } =
 			this.settingsLabels;
 		containerEl.empty();
 
@@ -210,6 +210,7 @@ export default class LocalBibleRefSettingTab extends PluginSettingTab {
 			quoteRefLinkSetting.settingEl.addClass(this.hiddenClass);
 		}
 
+		// callout format
 		new Setting(containerEl)
 			.setName(calloutFormat.name)
 			.setDesc(calloutFormat.description)
@@ -250,6 +251,36 @@ export default class LocalBibleRefSettingTab extends PluginSettingTab {
 					.setValue(this.plugin.settings.callout.linkToPassage)
 					.onChange(async (value) => {
 						this.plugin.settings.callout.linkToPassage = value;
+						await this.plugin.saveSettings();
+					})
+			);
+
+		new Setting(containerEl)
+			.setName(calloutFormat.controls.collapsible.name)
+			.setDesc(calloutFormat.controls.collapsible.description)
+			.addToggle((toggle) =>
+				toggle
+					.setValue(this.plugin.settings.callout.collapsible)
+					.onChange(async (value) => {
+						this.plugin.settings.callout.collapsible = value;
+						await this.plugin.saveSettings();
+					})
+			);
+
+		//suggestion format
+		new Setting(containerEl)
+			.setName(suggestionFormat.name)
+			.setDesc(suggestionFormat.description)
+			.setHeading();
+
+		new Setting(containerEl)
+			.setName(suggestionFormat.controls.full.name)
+			.setDesc(suggestionFormat.controls.full.description)
+			.addToggle((toggle) =>
+				toggle
+					.setValue(this.plugin.settings.fullSuggestion)
+					.onChange(async (value) => {
+						this.plugin.settings.fullSuggestion = value;
 						await this.plugin.saveSettings();
 					})
 			);

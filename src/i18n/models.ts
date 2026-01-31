@@ -57,6 +57,15 @@ export interface SettingsLabels {
 		controls: {
 			calloutType: Control;
 			linkToPassage: Control;
+			collapsible: Control;
+		};
+	};
+
+	suggestionFormat: {
+		name: string;
+		description: string;
+		controls: {
+			full: Control;
 		};
 	};
 
