@@ -81,6 +81,23 @@ export const SETTINGS_LABELS: SettingsLabels = {
 				description:
 					'Ob Sie den Verweis auf die Passage in Ihrer Tresorbibel verlinken möchten.',
 			},
+			collapsible: {
+				name: 'Zusammenklappbar',
+				description:
+					'Ob der für die Passage zu verwendende Hinweis einklappbar ist.',
+			},
+		},
+	},
+
+	suggestionFormat: {
+		name: 'Einstellungen für das Vorschlagsformat',
+		description: 'Einstellungen für das Format des Hinweistextes.',
+		controls: {
+			full: {
+				name: 'Vollständiger Vorschlag',
+				description:
+					'Ob der für die Passage vorgeschlagene Hinweis vollständig ist.',
+			},
 		},
 	},
 

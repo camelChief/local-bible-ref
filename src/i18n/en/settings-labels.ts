@@ -79,6 +79,24 @@ export const SETTINGS_LABELS: SettingsLabels = {
 				description:
 					'Whether to link the reference to the passage in your vault Bible.',
 			},
+			collapsible: {
+				name: 'Collapsible',
+				description:
+					'Whether the callout to use for the passage is collapsible.',
+			},
+		},
+	},
+
+	suggestionFormat: {
+		name: 'Suggestion Format Settings',
+		description: 'Settings for the callout suggestion passage format.',
+		controls: {
+			full: {
+				name: 'Full Suggestion',
+				description:
+					'Whether the callout suggestion to use for the passage is full.',
+
+			},
 		},
 	},
 

@@ -32,6 +32,7 @@ export default class LocalBibleRefPlugin extends Plugin {
 		const calloutSettings = {
 			type: CalloutType.Quote,
 			linkToPassage: true,
+			collapsible: true,
 		};
 
 		this.settings ??= {
@@ -41,6 +42,7 @@ export default class LocalBibleRefPlugin extends Plugin {
 			bibleFormat: BibleFormat.LocalBibleRef,
 			quote: quoteSettings,
 			callout: calloutSettings,
+			fullSuggestion: true
 		};
 
 		if (!this.settings.quote) this.settings.quote = quoteSettings;
