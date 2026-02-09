@@ -4,7 +4,7 @@ import { QuoteReferencePosition } from 'src/settings';
 
 export const SETTINGS_LABELS: SettingsLabels = {
 	required: {
-		name: '필수 설정',
+		name: '필수의',
 		controls: {
 			biblesPath: {
 				name: '성경의 길',
@@ -15,7 +15,7 @@ export const SETTINGS_LABELS: SettingsLabels = {
 	},
 
 	optional: {
-		name: '선택적 설정',
+		name: '선택 과목',
 		controls: {
 			defaultVersion: {
 				name: '기본 버전',
@@ -46,8 +46,7 @@ export const SETTINGS_LABELS: SettingsLabels = {
 	},
 
 	quoteFormat: {
-		name: '견적 형식 설정',
-		description: '인용구 형식 설정입니다.',
+		name: '견적 형식',
 		controls: {
 			includeReference: {
 				name: '참조 포함',
@@ -69,8 +68,7 @@ export const SETTINGS_LABELS: SettingsLabels = {
 	},
 
 	calloutFormat: {
-		name: '콜아웃 형식 설정',
-		description: '설명문 형식 설정입니다.',
+		name: '콜아웃 형식',
 		controls: {
 			calloutType: {
 				name: '콜아웃 유형',

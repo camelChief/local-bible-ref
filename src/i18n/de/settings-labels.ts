@@ -4,7 +4,7 @@ import { QuoteReferencePosition } from 'src/settings';
 
 export const SETTINGS_LABELS: SettingsLabels = {
 	required: {
-		name: 'Erforderliche Einstellungen',
+		name: 'Erforderlich',
 		controls: {
 			biblesPath: {
 				name: 'Bibeldateien',
@@ -15,7 +15,7 @@ export const SETTINGS_LABELS: SettingsLabels = {
 	},
 
 	optional: {
-		name: 'Optionale Einstellungen',
+		name: 'Optional',
 		controls: {
 			defaultVersion: {
 				name: 'Standardversion',
@@ -48,8 +48,7 @@ export const SETTINGS_LABELS: SettingsLabels = {
 	},
 
 	quoteFormat: {
-		name: 'Einstellungen für das Angebotsformat',
-		description: 'Einstellungen für das Zitatpassageformat.',
+		name: 'Angebotsformat',
 		controls: {
 			includeReference: {
 				name: 'Referenz angeben',
@@ -73,8 +72,7 @@ export const SETTINGS_LABELS: SettingsLabels = {
 	},
 
 	calloutFormat: {
-		name: 'Einstellungen für das Callout-Format',
-		description: 'Einstellungen für das Format des Callout-Passages.',
+		name: 'Callout-Format',
 		controls: {
 			calloutType: {
 				name: 'Callout-Typ',
