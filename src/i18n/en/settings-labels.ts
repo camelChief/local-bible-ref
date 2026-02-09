@@ -38,6 +38,11 @@ export const SETTINGS_LABELS: SettingsLabels = {
 				description:
 					'The formatting style you use for your vault bibles. Local Bible Ref relies on this to parse passages correctly.',
 			},
+			fullPreview: {
+				name: 'Full Passage Preview',
+				description:
+					'Whether to display the full passage in the preview rather than just a snippet.',
+			},
 		},
 	},
 
@@ -78,6 +83,11 @@ export const SETTINGS_LABELS: SettingsLabels = {
 				name: 'Link to passage',
 				description:
 					'Whether to link the reference to the passage in your vault Bible.',
+			},
+			collapsible: {
+				name: 'Collapsible',
+				description:
+					'Whether the callout to use for the passage is collapsible.',
 			},
 		},
 	},

@@ -38,6 +38,10 @@ export const SETTINGS_LABELS: SettingsLabels = {
 				description:
 					'보관된 성경에 사용하는 서식 스타일입니다. Local Bible Ref는 이 스타일을 기반으로 구절을 정확하게 분석합니다.',
 			},
+			fullPreview: {
+				name: '전체 구절 미리보기',
+				description: '미리보기에서 전체 내용을 표시할지, 아니면 일부만 표시할지 여부.',
+			},
 		},
 	},
 
@@ -75,6 +79,11 @@ export const SETTINGS_LABELS: SettingsLabels = {
 			linkToPassage: {
 				name: '통로 바로가기',
 				description: '보관된 성경의 해당 구절에 참조를 연결할지 여부.',
+			},
+			collapsible: {
+				name: '접을 수 있는',
+				description:
+					'해당 구절에 사용할 콜아웃이 접을 수 있는지 여부.',
 			},
 		},
 	},

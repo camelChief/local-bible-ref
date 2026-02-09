@@ -87,6 +87,8 @@ export default class LocalBibleRefSettingTab extends PluginSettingTab {
 				new PathSuggest(this.app, text.inputEl);
 			});
 
+
+		// optional settings ---
 		new Setting(containerEl).setName(optional.name).setHeading();
 
 		let defaultVersionTimeout: number;
@@ -151,6 +153,20 @@ export default class LocalBibleRefSettingTab extends PluginSettingTab {
 			);
 
 		new Setting(containerEl)
+			.setName(optional.controls.fullPreview.name)
+			.setDesc(optional.controls.fullPreview.description)
+			.addToggle((toggle) =>
+				toggle
+					.setValue(this.plugin.settings.fullPreview)
+					.onChange(async (value) => {
+						this.plugin.settings.fullPreview = value;
+						await this.plugin.saveSettings();
+					})
+			);
+
+
+		// quote format settings ---
+		new Setting(containerEl)
 			.setName(quoteFormat.name)
 			.setDesc(quoteFormat.description)
 			.setHeading();
@@ -210,6 +226,8 @@ export default class LocalBibleRefSettingTab extends PluginSettingTab {
 			quoteRefLinkSetting.settingEl.addClass(this.hiddenClass);
 		}
 
+
+		// callout format settings ---
 		new Setting(containerEl)
 			.setName(calloutFormat.name)
 			.setDesc(calloutFormat.description)
@@ -250,6 +268,18 @@ export default class LocalBibleRefSettingTab extends PluginSettingTab {
 					.setValue(this.plugin.settings.callout.linkToPassage)
 					.onChange(async (value) => {
 						this.plugin.settings.callout.linkToPassage = value;
+						await this.plugin.saveSettings();
+					})
+			);
+
+		new Setting(containerEl)
+			.setName(calloutFormat.controls.collapsible.name)
+			.setDesc(calloutFormat.controls.collapsible.description)
+			.addToggle((toggle) =>
+				toggle
+					.setValue(this.plugin.settings.callout.collapsible)
+					.onChange(async (value) => {
+						this.plugin.settings.callout.collapsible = value;
 						await this.plugin.saveSettings();
 					})
 			);
