@@ -39,7 +39,6 @@ export interface SettingsLabels {
 
 	quoteFormat: {
 		name: string;
-		description: string;
 		controls: {
 			includeReference: Control;
 			referencePosition: Control & {
@@ -54,7 +53,6 @@ export interface SettingsLabels {
 
 	calloutFormat: {
 		name: string;
-		description: string;
 		controls: {
 			calloutType: Control;
 			linkToPassage: Control;
