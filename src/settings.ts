@@ -6,6 +6,7 @@ export default interface LocalBibleRefSettings {
 	defaultVersionShorthand: string;
 	defaultPassageFormat: PassageFormat;
 	bibleFormat: BibleFormat;
+	fullPreview: boolean;
 	quote: {
 		includeReference: boolean;
 		referencePosition: QuoteReferencePosition;
@@ -16,7 +17,6 @@ export default interface LocalBibleRefSettings {
 		linkToPassage: boolean;
 		collapsible: boolean;
 	};
-	fullSuggestion: boolean;	
 }
 
 export enum QuoteReferencePosition {

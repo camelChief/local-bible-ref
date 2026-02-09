@@ -39,6 +39,11 @@ export const SETTINGS_LABELS: SettingsLabels = {
 				description:
 					'Der Formatierungsstil, den Sie für Ihre Vault-Bibeln verwenden. Local Bible Ref benötigt diesen, um Textpassagen korrekt zu analysieren.',
 			},
+			fullPreview: {
+				name: 'Vollständige Passage-Vorschau',
+				description:
+					'Ob in der Vorschau der vollständige Text oder nur ein Ausschnitt angezeigt werden soll.',
+			},
 		},
 	},
 
@@ -85,18 +90,6 @@ export const SETTINGS_LABELS: SettingsLabels = {
 				name: 'Zusammenklappbar',
 				description:
 					'Ob der für die Passage zu verwendende Hinweis einklappbar ist.',
-			},
-		},
-	},
-
-	suggestionFormat: {
-		name: 'Einstellungen für das Vorschlagsformat',
-		description: 'Einstellungen für das Format des Hinweistextes.',
-		controls: {
-			full: {
-				name: 'Vollständiger Vorschlag',
-				description:
-					'Ob der für die Passage vorgeschlagene Hinweis vollständig ist.',
 			},
 		},
 	},

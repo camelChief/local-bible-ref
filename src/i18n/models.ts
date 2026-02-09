@@ -33,6 +33,7 @@ export interface SettingsLabels {
 				};
 			};
 			bibleFormat: Control;
+			fullPreview: Control;
 		};
 	};
 
@@ -58,14 +59,6 @@ export interface SettingsLabels {
 			calloutType: Control;
 			linkToPassage: Control;
 			collapsible: Control;
-		};
-	};
-
-	suggestionFormat: {
-		name: string;
-		description: string;
-		controls: {
-			full: Control;
 		};
 	};
 

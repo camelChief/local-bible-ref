@@ -38,6 +38,11 @@ export const SETTINGS_LABELS: SettingsLabels = {
 				description:
 					'The formatting style you use for your vault bibles. Local Bible Ref relies on this to parse passages correctly.',
 			},
+			fullPreview: {
+				name: 'Full Passage Preview',
+				description:
+					'Whether to display the full passage in the preview rather than just a snippet.',
+			},
 		},
 	},
 
@@ -83,19 +88,6 @@ export const SETTINGS_LABELS: SettingsLabels = {
 				name: 'Collapsible',
 				description:
 					'Whether the callout to use for the passage is collapsible.',
-			},
-		},
-	},
-
-	suggestionFormat: {
-		name: 'Suggestion Format Settings',
-		description: 'Settings for the callout suggestion passage format.',
-		controls: {
-			full: {
-				name: 'Full Suggestion',
-				description:
-					'Whether the callout suggestion to use for the passage is full.',
-
 			},
 		},
 	},

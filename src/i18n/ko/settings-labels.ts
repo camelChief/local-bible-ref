@@ -38,6 +38,10 @@ export const SETTINGS_LABELS: SettingsLabels = {
 				description:
 					'보관된 성경에 사용하는 서식 스타일입니다. Local Bible Ref는 이 스타일을 기반으로 구절을 정확하게 분석합니다.',
 			},
+			fullPreview: {
+				name: '전체 구절 미리보기',
+				description: '미리보기에서 전체 내용을 표시할지, 아니면 일부만 표시할지 여부.',
+			},
 		},
 	},
 
@@ -80,18 +84,6 @@ export const SETTINGS_LABELS: SettingsLabels = {
 				name: '접을 수 있는',
 				description:
 					'해당 구절에 사용할 콜아웃이 접을 수 있는지 여부.',
-			},
-		},
-	},
-
-	suggestionFormat: {
-		name: '제안 형식 설정',
-		description: '콜아웃 제안 문구 형식에 대한 설정입니다.',
-		controls: {
-			full: {
-				name: '전체 제안',
-				description:
-					'본문에 사용할 콜아웃 제안이 완전한지 여부.',
 			},
 		},
 	},

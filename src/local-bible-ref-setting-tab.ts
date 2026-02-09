@@ -45,7 +45,7 @@ export default class LocalBibleRefSettingTab extends PluginSettingTab {
 
 	display(): void {
 		const { containerEl } = this;
-		const { required, optional, quoteFormat, calloutFormat, suggestionFormat, issues } =
+		const { required, optional, quoteFormat, calloutFormat, issues } =
 			this.settingsLabels;
 		containerEl.empty();
 
@@ -87,6 +87,8 @@ export default class LocalBibleRefSettingTab extends PluginSettingTab {
 				new PathSuggest(this.app, text.inputEl);
 			});
 
+
+		// optional settings ---
 		new Setting(containerEl).setName(optional.name).setHeading();
 
 		let defaultVersionTimeout: number;
@@ -151,6 +153,20 @@ export default class LocalBibleRefSettingTab extends PluginSettingTab {
 			);
 
 		new Setting(containerEl)
+			.setName(optional.controls.fullPreview.name)
+			.setDesc(optional.controls.fullPreview.description)
+			.addToggle((toggle) =>
+				toggle
+					.setValue(this.plugin.settings.fullPreview)
+					.onChange(async (value) => {
+						this.plugin.settings.fullPreview = value;
+						await this.plugin.saveSettings();
+					})
+			);
+
+
+		// quote format settings ---
+		new Setting(containerEl)
 			.setName(quoteFormat.name)
 			.setDesc(quoteFormat.description)
 			.setHeading();
@@ -210,7 +226,8 @@ export default class LocalBibleRefSettingTab extends PluginSettingTab {
 			quoteRefLinkSetting.settingEl.addClass(this.hiddenClass);
 		}
 
-		// callout format
+
+		// callout format settings ---
 		new Setting(containerEl)
 			.setName(calloutFormat.name)
 			.setDesc(calloutFormat.description)
@@ -263,24 +280,6 @@ export default class LocalBibleRefSettingTab extends PluginSettingTab {
 					.setValue(this.plugin.settings.callout.collapsible)
 					.onChange(async (value) => {
 						this.plugin.settings.callout.collapsible = value;
-						await this.plugin.saveSettings();
-					})
-			);
-
-		//suggestion format
-		new Setting(containerEl)
-			.setName(suggestionFormat.name)
-			.setDesc(suggestionFormat.description)
-			.setHeading();
-
-		new Setting(containerEl)
-			.setName(suggestionFormat.controls.full.name)
-			.setDesc(suggestionFormat.controls.full.description)
-			.addToggle((toggle) =>
-				toggle
-					.setValue(this.plugin.settings.fullSuggestion)
-					.onChange(async (value) => {
-						this.plugin.settings.fullSuggestion = value;
 						await this.plugin.saveSettings();
 					})
 			);

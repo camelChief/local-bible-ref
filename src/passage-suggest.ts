@@ -117,7 +117,8 @@ export default class PassageSuggest extends EditorSuggest<PassageSuggestion> {
 		});
 
 		// suggest
-		const excerpt = this.generateExcerpt(texts[0]);
+		const fullText = texts.join('\n\n');
+		const excerpt = this.generateExcerpt(fullText);
 		const text = this.formatTexts(texts, passageRef, context);
 		return [{ excerpt, text }];
 	}
@@ -295,26 +296,24 @@ export default class PassageSuggest extends EditorSuggest<PassageSuggestion> {
 
 	/** Generates an excerpt for the suggestion. */
 	private generateExcerpt(text: string): string {
-		if(this.settings.fullSuggestion){      
-			text = text.replace(/(?:<sup>)/g, "");
-			text = text.replace(/(?:<\/sup>)/g, "");
-		}
-		else{
+		const fullPreview = this.settings.fullPreview;
+		if (fullPreview) {
+			text = text.replace(/<sup>/g, '');
+			text = text.replace(/<\/sup>/g, '');
+		} else {
 			text = text.split(/<\/sup>/, 2)[1];
-			text = text.replace(/<sup>\d+<\/sup>/g, "");
-			text = text.replace(/^(?:> |- )/gm, "");
+			text = text.replace(/<sup>\d+<\/sup>/g, '');
+			text = text.replace(/^(?:> |- )/gm, '');
 		}
 
 		text = text.replace(
 			/<span(?:\s+\w+=['"][^'"]+['"])*>([^<]+)<\/span>/g,
-			"$1"
+			'$1'
 		);
-			if(!this.settings.fullSuggestion)
-				text = text.replace(/\n/g, ' ');
-		text = text.replace(/ {2,}/g, " ");
-		if (this.settings.fullSuggestion)
-		return text;
-		return text.slice(0, 45) + "...";
+		if (!fullPreview) text = text.replace(/\n/g, ' ');
+		text = text.replace(/ {2,}/g, ' ');
+		if (fullPreview) return text;
+		return text.slice(0, 45) + '...';
 	}
 
 	/** Formats the final text for suggestion. */
@@ -362,15 +361,14 @@ export default class PassageSuggest extends EditorSuggest<PassageSuggestion> {
 				break;
 			}
 			case PassageFormat.Callout: {
-				const { type, linkToPassage } = this.settings.callout;
+				const { type, linkToPassage, collapsible } = this.settings.callout;
 
 				let stringRef = '';
 				if (linkToPassage)
 					stringRef = this.generatePassageLink(passageRef, context);
 				else stringRef = passageRef.stringify();
-				formatted = `> [!quote]${this.settings.callout.collapsible? '+' : ''} ${stringRef}\n`;
 
-				formatted = `> [!${type}]${this.settings.callout.collapsible? '+' : ''} ${stringRef}\n`;
+				formatted = `> [!${type}]${collapsible ? '+' : ''} ${stringRef}\n`;
 				formatted += texts.join('\n\n').trim();
 				formatted = formatted.replace(/\n/gm, '\n> ');
 				formatted += '\n\n';

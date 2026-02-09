@@ -40,9 +40,9 @@ export default class LocalBibleRefPlugin extends Plugin {
 			defaultVersionShorthand: '',
 			defaultPassageFormat: PassageFormat.Callout,
 			bibleFormat: BibleFormat.LocalBibleRef,
+			fullPreview: false,
 			quote: quoteSettings,
 			callout: calloutSettings,
-			fullSuggestion: true
 		};
 
 		if (!this.settings.quote) this.settings.quote = quoteSettings;
