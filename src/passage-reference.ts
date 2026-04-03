@@ -210,6 +210,8 @@ export default class PassageReference
 
 function getBooksByLanguage(): Book[] {
 	switch (getLanguage()) {
+		case 'cs':
+			return I18N.CS.BOOKS;
 		case 'de':
 			return I18N.DE.BOOKS;
 		case 'ko':

@@ -27,6 +27,9 @@ export default class PassageSuggest extends EditorSuggest<PassageSuggestion> {
 		this.settings = settings;
 
 		switch (getLanguage()) {
+			case 'cs':
+				this.settingsNotConfiguredText = I18N.CS.COMMON.settingsNotConfigured;
+				break;
 			case 'de':
 				this.settingsNotConfiguredText = I18N.DE.COMMON.settingsNotConfigured;
 				break;
